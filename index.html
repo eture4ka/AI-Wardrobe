@@ -3,65 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Образ AI — гардероб з AI-стилістом</title>
+<title>SmartWardrobe — гардероб з AI-стилістом</title>
+<meta name="description" content="Оцифруй гардероб, зрозумій свій стиль, створюй образи, вирішуй чи варто купувати та проходь fashion-челенджі.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#EEEBF3; --surface:#FFFFFF; --surface-2:#F6F4F9; --ink:#231B2E; --muted:#665E73; --line:#D9D3E2;
-  --tape:#F4C542; --tape-ink:#2E2404; --teal:#1F5E5B; --teal-ink:#FFFFFF; --danger:#B3261E;
-  --display:"Unbounded", "Arial Black", system-ui, sans-serif;
-  --body:"Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --tape:#F4C542; --tape-ink:#2E2404; --teal:#1F5E5B; --teal-ink:#FFFFFF; --danger:#B3261E; --ok:#1F6B3A;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#17131C; --surface:#231D2A; --surface-2:#2B2433; --ink:#EEE9F2; --muted:#A99FB6; --line:#3B3345;
-    --tape:#F4C542; --tape-ink:#2E2404; --teal:#62B6AF; --teal-ink:#0C1D1C; --danger:#F2B8B5;
-  }
-}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17131C; --surface:#231D2A; --surface-2:#2B2433; --ink:#EEE9F2; --muted:#A99FB6; --line:#3B3345;
+  --teal:#62B6AF; --teal-ink:#0C1D1C; --danger:#F2B8B5; --ok:#7FD1A0;
+}}
 :root[data-theme="dark"]{
   --bg:#17131C; --surface:#231D2A; --surface-2:#2B2433; --ink:#EEE9F2; --muted:#A99FB6; --line:#3B3345;
-  --tape:#F4C542; --tape-ink:#2E2404; --teal:#62B6AF; --teal-ink:#0C1D1C; --danger:#F2B8B5;
+  --teal:#62B6AF; --teal-ink:#0C1D1C; --danger:#F2B8B5; --ok:#7FD1A0;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
-button,input,select{font:inherit;color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--teal);outline-offset:2px;border-radius:6px}
 [hidden]{display:none !important}
 
-.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding-bottom:84px}
-.bar{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 8px}
-.logo{font-family:var(--display);font-weight:700;font-size:1.35rem;letter-spacing:-.01em;position:relative;padding-bottom:6px}
+.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding-bottom:88px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:20px 20px 8px}
+.logo{font-family:var(--display);font-weight:700;font-size:1.2rem;letter-spacing:-.01em;position:relative;padding-bottom:6px}
 .logo::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:6px;border-radius:2px;
   background:repeating-linear-gradient(90deg,var(--tape) 0 10px,var(--tape-ink) 10px 11px,var(--tape) 11px 20px)}
-.ai-state{font-size:.8rem;color:var(--muted);text-align:right;max-width:55%}
+.barside{display:flex;align-items:center;gap:6px}
+.ai-state{font-size:.78rem;color:var(--muted);text-align:right;max-width:150px}
 main{padding:8px 20px 20px;flex:1}
 h1{font-family:var(--display);font-weight:500;font-size:1.25rem;line-height:1.25;margin:12px 0 4px}
+h3{font-family:var(--display);font-weight:500;font-size:1rem;margin:0 0 8px}
 .lead{color:var(--muted);margin:0 0 16px;font-size:.95rem}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);text-align:center}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.primary{background:var(--teal);color:var(--teal-ink);box-shadow:none}
 .btn.tape{background:var(--tape);color:var(--tape-ink);box-shadow:none}
 .btn.ghost{background:transparent;box-shadow:none;padding:8px 10px;color:var(--muted)}
 .btn.danger{color:var(--danger)}
 .btn.block{width:100%}
+.btn.sm{padding:8px 12px;font-size:.85rem;border-radius:10px}
 .row{display:flex;gap:10px;flex-wrap:wrap}
+.card{background:var(--surface);border-radius:18px;padding:16px;margin:0 0 14px}
 
 .stats{display:flex;gap:10px;margin:4px 0 14px}
 .stat{flex:1;background:var(--surface);border-radius:14px;padding:12px 14px}
-.stat b{font-family:var(--display);font-weight:500;font-size:1.4rem;display:block;line-height:1.1}
-.stat span{font-size:.8rem;color:var(--muted)}
+.stat b{font-family:var(--display);font-weight:500;font-size:1.35rem;display:block;line-height:1.1}
+.stat span{font-size:.78rem;color:var(--muted)}
 
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin:0 -2px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:0;border-radius:999px;padding:8px 14px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer;font-weight:600;font-size:.9rem;white-space:nowrap}
 .chip[aria-pressed="true"],.chip[aria-checked="true"]{background:var(--ink);color:var(--bg);box-shadow:none}
 
-/* Hang tags: the item card */
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media (max-width:360px){.grid{grid-template-columns:repeat(2,1fr)}}
 .tag{position:relative;border:0;padding:20px 8px 10px;text-align:left;cursor:pointer;background:var(--surface);color:var(--ink);
@@ -71,24 +73,24 @@ h1{font-family:var(--display);font-weight:500;font-size:1.25rem;line-height:1.25
 .thumb img{width:100%;height:100%;object-fit:cover}
 .thumb .emo{font-size:1.9rem;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
 .tname{font-weight:700;font-size:.82rem;line-height:1.25;margin-top:7px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.tmeta{font-size:.74rem;color:var(--muted)}
-.worn0{position:absolute;right:5px;top:5px;background:var(--tape);color:var(--tape-ink);font-size:.66rem;font-weight:700;border-radius:6px;padding:1px 6px}
+.tmeta{font-size:.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dust{position:absolute;right:4px;top:4px;background:var(--ink);color:var(--bg);font-size:.62rem;font-weight:700;border-radius:6px;padding:1px 5px}
 
-.empty{background:var(--surface);border-radius:16px;padding:22px;text-align:left}
+.empty{background:var(--surface);border-radius:16px;padding:22px}
 .empty p{margin:0 0 14px;color:var(--muted)}
 
-/* Outfit builder */
 .field{margin:0 0 18px}
 .flabel{font-weight:700;font-size:.9rem;margin:0 0 8px;display:block}
 .temp{display:flex;align-items:center;gap:12px}
 .temp input{flex:1;accent-color:var(--teal)}
 .temp output{font-family:var(--display);font-weight:500;min-width:3.6em;text-align:right}
+.cityrow{display:flex;gap:8px}
+.cityrow input{flex:1;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface-2)}
 .status{font-size:.9rem;color:var(--muted);margin:12px 0}
 .status.err{color:var(--danger)}
 .missing{background:var(--tape);color:var(--tape-ink);border-radius:14px;padding:12px 14px;margin:16px 0;font-size:.92rem}
 .missing b{display:block;font-family:var(--display);font-weight:500;font-size:.85rem;margin-bottom:2px}
 
-/* The rail: outfits hang on a rod */
 .look{background:var(--surface);border-radius:18px;padding:16px;margin:0 0 16px}
 .look h2{font-family:var(--display);font-weight:500;font-size:1.05rem;line-height:1.3;margin:0 0 4px}
 .look .meta{font-size:.8rem;color:var(--muted);margin:0 0 10px}
@@ -105,14 +107,39 @@ h1{font-family:var(--display);font-weight:500;font-size:1.25rem;line-height:1.25
 .fresh .hang:nth-child(2){animation-delay:.06s}.fresh .hang:nth-child(3){animation-delay:.12s}.fresh .hang:nth-child(4){animation-delay:.18s}.fresh .hang:nth-child(5){animation-delay:.24s}
 @media (prefers-reduced-motion:reduce){.fresh .hang{animation:none}}
 
-/* Tabs */
-.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
-.tabs-in{max-width:480px;margin:0 auto;display:flex;gap:6px}
-.tabs button{flex:1;border:0;background:transparent;border-radius:12px;padding:8px 4px;cursor:pointer;font-weight:700;font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+/* Level + challenges */
+.level{background:var(--ink);color:var(--bg);border-radius:18px;padding:16px;margin:0 0 14px}
+.level .lv{font-family:var(--display);font-weight:500;font-size:1.15rem}
+.level .pts{font-size:.85rem;opacity:.8}
+.meter{height:8px;border-radius:4px;background:rgba(255,255,255,.22);overflow:hidden;margin-top:10px}
+.meter i{display:block;height:100%;background:var(--tape);border-radius:4px}
+.ch{background:var(--surface-2);border-radius:14px;padding:12px 14px;margin:0 0 10px}
+.ch b{display:block;font-size:.95rem}
+.ch small{color:var(--muted);font-size:.82rem}
+.ch .meter{background:var(--line);margin-top:8px}
+.ch .meter i{background:var(--teal)}
+.ch .bot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px}
+.ch .cnt{font-size:.82rem;color:var(--muted);font-weight:700}
+.done{color:var(--ok);font-weight:700;font-size:.85rem}
+
+.verdict{border-radius:14px;padding:14px;margin:0 0 12px;font-weight:700}
+.v-buy{background:var(--ok);color:#fff}
+.v-maybe{background:var(--tape);color:var(--tape-ink)}
+.v-skip{background:var(--danger);color:#fff}
+.factgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}
+.fact{background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.fact b{display:block;font-family:var(--display);font-weight:500;font-size:1.2rem;line-height:1.1}
+.fact span{font-size:.75rem;color:var(--muted)}
+.packday{background:var(--surface-2);border-radius:12px;padding:10px 12px;margin:0 0 8px}
+.packday b{font-size:.9rem}
+.packday span{display:block;font-size:.83rem;color:var(--muted)}
+
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.tabs-in{max-width:480px;margin:0 auto;display:flex;gap:4px}
+.tabs button{flex:1;border:0;background:transparent;border-radius:12px;padding:8px 2px;cursor:pointer;font-weight:700;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
 .tabs button span{font-size:1.2rem;line-height:1}
 .tabs button[aria-selected="true"]{color:var(--ink);background:var(--surface-2)}
 
-/* Dialog */
 dialog{border:0;border-radius:20px;padding:0;width:min(440px,calc(100vw - 24px));max-height:calc(100vh - 24px);background:var(--surface);color:var(--ink)}
 dialog::backdrop{background:rgba(20,14,26,.55)}
 .dlg{padding:20px;overflow:auto;max-height:calc(100vh - 24px)}
@@ -123,7 +150,7 @@ dialog::backdrop{background:rgba(20,14,26,.55)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .fl{display:block;margin:0 0 12px}
 .fl span{display:block;font-size:.8rem;font-weight:700;margin-bottom:4px;color:var(--muted)}
-.fl input[type=text],.fl select{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface-2)}
+.fl input[type=text],.fl input[type=number],.fl select{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface-2)}
 .colorin{display:flex;gap:8px}
 .colorin input[type=color]{width:46px;height:44px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface-2);padding:3px;flex:none}
 .seasons{display:flex;gap:6px;flex-wrap:wrap}
@@ -131,8 +158,9 @@ dialog::backdrop{background:rgba(20,14,26,.55)}
 .seasons input{accent-color:var(--teal)}
 .warm input{width:100%;accent-color:var(--teal)}
 .dlg-actions{display:flex;gap:10px;justify-content:space-between;margin-top:8px;flex-wrap:wrap}
+.tryout{border-radius:14px;overflow:hidden;background:var(--surface-2);margin:0 0 12px}
 
-.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:.9rem;font-weight:600;max-width:calc(100vw - 40px);opacity:0;pointer-events:none;transition:opacity .2s}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:.9rem;font-weight:600;max-width:calc(100vw - 40px);opacity:0;pointer-events:none;transition:opacity .2s;z-index:5}
 .toast.show{opacity:1}
 .spinner{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:spin .8s linear infinite;vertical-align:-2px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -141,20 +169,28 @@ dialog::backdrop{background:rgba(20,14,26,.55)}
 <body>
 <div class="app">
   <header class="bar">
-    <div class="logo">Образ AI</div>
-    <div style="display:flex;align-items:center;gap:6px"><div class="ai-state" id="aiState">Підключаю AI…</div><button class="btn ghost" id="keyBtn" aria-label="API-ключ">🔑</button></div>
+    <div class="logo">SmartWardrobe</div>
+    <div class="barside">
+      <div class="ai-state" id="aiState">Підключаю AI…</div>
+      <button class="btn ghost" id="keyBtn" aria-label="API-ключ">🔑</button>
+    </div>
   </header>
 
   <main>
     <section id="tab-wardrobe" aria-labelledby="h-w">
       <h1 id="h-w">Мій гардероб</h1>
-      <p class="lead">Сфотографуйте річ, і AI сам визначить, що це, якого кольору й на який сезон.</p>
+      <p class="lead">Сфотографуйте річ — AI сам визначить, що це, якого кольору й на який сезон.</p>
       <div id="wardrobeBody"></div>
     </section>
 
     <section id="tab-outfit" aria-labelledby="h-o" hidden>
       <h1 id="h-o">Що вдягнути?</h1>
-      <p class="lead">AI збере образи тільки з ваших речей, з урахуванням події та погоди.</p>
+      <p class="lead">AI збере образи лише з ваших речей, з урахуванням місця, події та погоди.</p>
+      <div class="field">
+        <label class="flabel" for="city">Місто</label>
+        <div class="cityrow"><input type="text" id="city" placeholder="Напр. Львів" autocomplete="address-level2"><button class="btn" id="wxBtn">Погода</button></div>
+        <div class="status" id="wxStatus" role="status" aria-live="polite"></div>
+      </div>
       <div class="field">
         <span class="flabel" id="lbl-ev">Куди йдете</span>
         <div class="chips" role="radiogroup" aria-labelledby="lbl-ev" id="events"></div>
@@ -177,8 +213,14 @@ dialog::backdrop{background:rgba(20,14,26,.55)}
 
     <section id="tab-saved" aria-labelledby="h-s" hidden>
       <h1 id="h-s">Збережені образи</h1>
-      <p class="lead">Позначайте, що вдягли сьогодні, і застосунок покаже, які речі ви не носите.</p>
+      <p class="lead">Позначайте, що вдягли сьогодні — це рухає ваші челенджі та аналітику гардеробу.</p>
       <div id="savedBody"></div>
+    </section>
+
+    <section id="tab-me" aria-labelledby="h-m" hidden>
+      <h1 id="h-m">Мій стиль</h1>
+      <p class="lead">Профіль стилю, челенджі та речі, про які ви забули.</p>
+      <div id="meBody"></div>
     </section>
   </main>
 
@@ -186,7 +228,8 @@ dialog::backdrop{background:rgba(20,14,26,.55)}
     <div class="tabs-in" role="tablist">
       <button role="tab" aria-selected="true" data-tab="wardrobe"><span aria-hidden="true">🧺</span>Гардероб</button>
       <button role="tab" aria-selected="false" data-tab="outfit"><span aria-hidden="true">✨</span>Підібрати</button>
-      <button role="tab" aria-selected="false" data-tab="saved"><span aria-hidden="true">🔖</span>Збережене</button>
+      <button role="tab" aria-selected="false" data-tab="saved"><span aria-hidden="true">🔖</span>Образи</button>
+      <button role="tab" aria-selected="false" data-tab="me"><span aria-hidden="true">🎯</span>Профіль</button>
     </div>
   </nav>
 </div>
@@ -204,11 +247,13 @@ dialog::backdrop{background:rgba(20,14,26,.55)}
       <label class="fl"><span>Категорія</span><select id="fCat"></select></label>
       <label class="fl"><span>Стиль</span><select id="fStyle"></select></label>
     </div>
-    <label class="fl"><span>Колір</span>
-      <div class="colorin"><input type="text" id="fColor" maxlength="24" placeholder="Напр. білий"><input type="color" id="fHex" value="#cccccc" aria-label="Відтінок"></div>
-    </label>
+    <div class="frow">
+      <label class="fl"><span>Колір</span><div class="colorin"><input type="text" id="fColor" maxlength="24" placeholder="білий"><input type="color" id="fHex" value="#cccccc" aria-label="Відтінок"></div></label>
+      <label class="fl"><span>Ціна, грн</span><input type="number" id="fPrice" min="0" step="1" placeholder="—"></label>
+    </div>
     <div class="fl"><span>Сезони</span><div class="seasons" id="fSeasons"></div></div>
     <label class="fl warm"><span>Наскільки тепла річ: <b id="fWarmOut">2</b> з 5</span><input type="range" id="fWarm" min="1" max="5" value="2"></label>
+    <div class="status" id="cpwStatus"></div>
     <div class="dlg-actions">
       <button class="btn danger" id="delItem" hidden>Видалити</button>
       <div class="row" style="margin-left:auto">
@@ -219,11 +264,52 @@ dialog::backdrop{background:rgba(20,14,26,.55)}
   </div>
 </dialog>
 
+<dialog id="buyDlg" aria-labelledby="buyTitle">
+  <div class="dlg">
+    <h2 id="buyTitle">Купувати чи ні?</h2>
+    <p class="lead">Сфотографуйте річ у магазині — AI порівняє її з вашим гардеробом і скаже, скільки нових образів вона додасть.</p>
+    <label class="photo" id="buyBox">
+      <input type="file" accept="image/*" id="buyIn">
+      <span id="buyHint">Фото речі з магазину</span>
+    </label>
+    <label class="fl"><span>Ціна, грн (необов'язково)</span><input type="number" id="buyPrice" min="0" step="1" placeholder="—"></label>
+    <div class="status" id="buyStatus" role="status" aria-live="polite"></div>
+    <div id="buyResult"></div>
+    <div class="dlg-actions">
+      <button class="btn" id="buyClose" style="margin-left:auto">Закрити</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="packDlg" aria-labelledby="packTitle">
+  <div class="dlg">
+    <h2 id="packTitle">Розумна валіза</h2>
+    <p class="lead">AI подивиться прогноз погоди й складе образи на кожен день з мінімальної кількості речей.</p>
+    <div class="frow">
+      <label class="fl"><span>Куди їдете</span><input type="text" id="packCity" placeholder="Напр. Рим"></label>
+      <label class="fl"><span>Днів</span><input type="number" id="packDays" min="1" max="14" value="5"></label>
+    </div>
+    <button class="btn primary block" id="packGo">Скласти валізу</button>
+    <div class="status" id="packStatus" role="status" aria-live="polite"></div>
+    <div id="packResult"></div>
+    <div class="dlg-actions"><button class="btn" id="packClose" style="margin-left:auto">Закрити</button></div>
+  </div>
+</dialog>
+
+<dialog id="tryDlg" aria-labelledby="tryTitle">
+  <div class="dlg">
+    <h2 id="tryTitle">Примірка на мені</h2>
+    <div class="status" id="tryStatus" role="status" aria-live="polite"></div>
+    <div id="tryResult"></div>
+    <div class="dlg-actions"><button class="btn" id="tryClose" style="margin-left:auto">Закрити</button></div>
+  </div>
+</dialog>
+
 <dialog id="keyDlg" aria-labelledby="keyTitle">
   <div class="dlg">
-    <h2 id="keyTitle">API-ключ Claude</h2>
-    <p class="lead">Ключ зберігається лише у вашому браузері й відправляється тільки на api.anthropic.com. Отримати його можна на console.anthropic.com у розділі API Keys.</p>
-    <label class="fl"><span>Ключ</span><input type="text" id="keyIn" placeholder="sk-ant-..." autocomplete="off" spellcheck="false"></label>
+    <h2 id="keyTitle">API-ключ Gemini</h2>
+    <p class="lead">Безкоштовний ключ можна отримати на aistudio.google.com у розділі Get API key. Ключ зберігається лише у вашому браузері й надсилається тільки до Google.</p>
+    <label class="fl"><span>Ключ</span><input type="text" id="keyIn" placeholder="AIza..." autocomplete="off" spellcheck="false"></label>
     <div class="dlg-actions">
       <button class="btn danger" id="keyDel">Видалити ключ</button>
       <div class="row" style="margin-left:auto"><button class="btn" id="keyCancel">Скасувати</button><button class="btn primary" id="keySave">Зберегти</button></div>
@@ -234,41 +320,274 @@ dialog::backdrop{background:rgba(20,14,26,.55)}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const CATS = {top:{label:"Верх",emoji:"👕"},bottom:{label:"Низ",emoji:"👖"},dress:{label:"Сукні",emoji:"👗"},outer:{label:"Верхній одяг",emoji:"🧥"},shoes:{label:"Взуття",emoji:"👟"},acc:{label:"Аксесуари",emoji:"👜"}};
-const STYLES = {casual:"Повсякденний",office:"Діловий",sport:"Спортивний",evening:"Вечірній",street:"Стрітстайл"};
-const SEASONS = {spring:"Весна",summer:"Літо",autumn:"Осінь",winter:"Зима"};
-const EVENTS = ["Навчання","Робота","Побачення","Вечірка","Прогулянка","Спорт"];
-const WEATHER = ["Сонячно","Хмарно","Дощ","Сніг","Вітер"];
-const LS_KEY = "obraz-ai-v1";
+/* =========================================================
+   SmartWardrobe — гардероб з AI-стилістом
+   Навчальний прототип. Увесь код в одному файлі.
+   ========================================================= */
 
-const state = {items:[],outfits:[],filter:"all",sample:null,canImages:false,aiOff:false,event:"Навчання",weather:"Хмарно",results:null,editing:null,draftPhoto:null,ctl:null};
-const $ = s => document.querySelector(s);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const hexOk = h => /^#[0-9a-f]{6}$/i.test(h||"") ? h : "#c9c3d3";
-const newId = () => "i" + Math.random().toString(36).slice(2,10);
+/* ---------- Довідники ---------- */
+const CATS={top:{label:"Верх",emoji:"👕"},bottom:{label:"Низ",emoji:"👖"},dress:{label:"Сукні",emoji:"👗"},outer:{label:"Верхній одяг",emoji:"🧥"},shoes:{label:"Взуття",emoji:"👟"},acc:{label:"Аксесуари",emoji:"👜"}};
+const STYLES={casual:"Повсякденний",office:"Діловий",sport:"Спортивний",evening:"Вечірній",street:"Стрітстайл"};
+const SEASONS={spring:"Весна",summer:"Літо",autumn:"Осінь",winter:"Зима"};
+const EVENTS=["Навчання","Робота","Побачення","Вечірка","Прогулянка","Спорт"];
+const WEATHER=["Сонячно","Хмарно","Дощ","Сніг","Вітер"];
+const LEVELS=[{p:0,name:"Style Beginner"},{p:100,name:"Fashion Explorer"},{p:300,name:"Smart Stylist"},{p:700,name:"Style Master"}];
+const FORGOT_DAYS=30;   // не носили стільки днів — річ вважається забутою
+const NEW_GRACE_DAYS=14; // новій речі даємо два тижні, перш ніж нагадувати про неї
+const LS_KEY="smartwardrobe-v2";
+const KEY_LS="smartwardrobe-key";
+
+const CHALLENGES=[
+  {id:"no-repeat",title:"7 днів без повторення образу",hint:"Щодня вдягайте новий набір речей",goal:7,points:80},
+  {id:"hero",title:"5 образів з однією річчю",hint:"Покажіть, що базова річ працює по-різному",goal:5,points:60},
+  {id:"revive",title:"Оживіть 3 забуті речі",hint:"Вдягніть те, що давно лежить без діла",goal:3,points:70},
+  {id:"digitize",title:"Оцифруйте 20 речей",hint:"Чим повніший гардероб, тим точніші поради",goal:20,points:50}
+];
+
+/* ---------- Стан ---------- */
+const state={
+  items:[],outfits:[],wearLog:[],profile:null,points:0,challenges:{},city:"",userPhoto:null,
+  filter:"all",event:"Навчання",weather:"Хмарно",results:null,editing:null,draftPhoto:null,ctl:null,
+  ai:null,aiBusy:false
+};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hexOk=h=>/^#[0-9a-f]{6}$/i.test(h||"")?h:"#c9c3d3";
+const newId=()=>"i"+Math.random().toString(36).slice(2,10);
+const today=()=>new Date().toISOString().slice(0,10);
+const daysBetween=(a,b)=>Math.round((b-a)/86400000);
+const tempLabel=v=>(v>0?"+":"")+v+"°";
 
 let toastT;
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),3200)}
 
-/* ---------- Storage: localStorage ---------- */
-const Store = {
-  loadLocal(){try{const d=JSON.parse(localStorage.getItem(LS_KEY)||"{}");state.items=Array.isArray(d.items)?d.items:[];state.outfits=Array.isArray(d.outfits)?d.outfits:[]}catch(e){}},
-  saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify({items:state.items,outfits:state.outfits}));return true}catch(e){toast("Сховище браузера переповнене. Видаліть кілька речей.");return false}},
-  async put(kind,obj){
-    const arr=state[kind];const i=arr.findIndex(x=>x.id===obj.id);if(i>=0)arr[i]=obj;else arr.push(obj);
-    this.saveLocal();renderWardrobe();renderSaved();
+/* ---------- Сховище (localStorage) ---------- */
+const Store={
+  load(){
+    try{
+      const d=JSON.parse(localStorage.getItem(LS_KEY)||"{}");
+      state.items=Array.isArray(d.items)?d.items:[];
+      state.outfits=Array.isArray(d.outfits)?d.outfits:[];
+      state.wearLog=Array.isArray(d.wearLog)?d.wearLog:[];
+      state.challenges=d.challenges&&typeof d.challenges==="object"?d.challenges:{};
+      state.profile=d.profile||null;
+      state.points=Number(d.points)||0;
+      state.city=d.city||"";
+      state.userPhoto=d.userPhoto||null;
+    }catch(e){console.warn("Не вдалося прочитати сховище",e)}
   },
-  async del(kind,id){
-    state[kind]=state[kind].filter(x=>x.id!==id);this.saveLocal();renderWardrobe();renderSaved();
+  save(){
+    try{
+      localStorage.setItem(LS_KEY,JSON.stringify({items:state.items,outfits:state.outfits,wearLog:state.wearLog,
+        challenges:state.challenges,profile:state.profile,points:state.points,city:state.city,userPhoto:state.userPhoto}));
+      return true;
+    }catch(e){toast("Сховище браузера переповнене. Видаліть кілька фото або речей.");return false}
   }
 };
-async function safe(p,msg){try{await p;return true}catch(e){console.warn(e);toast(e?.code==="quota_exceeded"?"Забагато речей у сховищі. Видаліть кілька.":(msg||"Не вдалося зберегти. Спробуйте ще раз."));return false}}
+function persist(){const ok=Store.save();renderAll();return ok}
+function renderAll(){renderWardrobe();renderSaved();renderMe()}
 
-/* ---------- Rendering ---------- */
-function tagHTML(it){
+/* ---------- AI: Google Gemini API ---------- */
+// Моделі можна змінити тут. Список: https://ai.google.dev/gemini-api/docs/models
+const MODEL_FAST="gemini-2.5-flash-lite"; // швидко: розпізнавання речей
+const MODEL_SMART="gemini-2.5-flash";     // розумніше: образи, аналіз стилю, валіза
+const MODEL_IMAGE="gemini-2.5-flash-image"; // експеримент: примірка на фото
+
+const getKey=()=>{try{return localStorage.getItem(KEY_LS)||""}catch(e){return ""}};
+const blobToB64=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(",")[1]);r.onerror=rej;r.readAsDataURL(b)});
+const dataUrlToB64=u=>String(u||"").split(",")[1]||"";
+
+function parseJSON(text){
+  const t=String(text||"").replace(/```json|```/g,"").trim();
+  if(!t)throw {code:"invalid_json"};
+  try{return JSON.parse(t)}catch(e){}
+  const starts=["{","["].map(c=>t.indexOf(c)).filter(i=>i>=0);
+  const a=starts.length?Math.min(...starts):-1;
+  const b=Math.max(t.lastIndexOf("}"),t.lastIndexOf("]"));
+  if(a>=0&&b>a){try{return JSON.parse(t.slice(a,b+1))}catch(e){}}
+  throw {code:"invalid_json"};
+}
+async function callGemini(model,parts,cfg,signal){
+  const key=getKey();if(!key)throw {code:"no_key"};
+  const send=c=>fetch("https://generativelanguage.googleapis.com/v1beta/models/"+model+":generateContent",{
+    method:"POST",signal,
+    headers:{"content-type":"application/json","x-goog-api-key":key},
+    body:JSON.stringify({contents:[{role:"user",parts}],generationConfig:c})});
+  let res;
+  try{
+    res=await send(cfg);
+    // не всі моделі приймають thinkingConfig — тоді повторюємо без нього
+    if(res.status===400&&cfg.thinkingConfig){const {thinkingConfig,...rest}=cfg;res=await send(rest)}
+  }catch(e){throw {code:e?.name==="AbortError"?"cancelled":"upstream_error"}}
+  if(!res.ok){
+    const err=await res.json().catch(()=>null);
+    const msg=err?.error?.message||"";
+    console.warn("Gemini API error",res.status,msg);
+    const badKey=res.status===401||res.status===403||/API key|API_KEY_INVALID|PERMISSION_DENIED/i.test(msg);
+    throw {code:badKey?"bad_key":res.status===429?"rate_limited":res.status===404?"no_model":res.status===400?"bad_request":"upstream_error",detail:msg};
+  }
+  const data=await res.json();
+  const cand=data.candidates?.[0];
+  if(cand&&["SAFETY","PROHIBITED_CONTENT","BLOCKLIST","IMAGE_SAFETY"].includes(cand.finishReason))throw {code:"refused"};
+  return cand?.content?.parts||[];
+}
+const AI={
+  async json(prompt,opts={}){
+    const parts=[];
+    for(const b of [].concat(opts.images||[]))parts.push({inline_data:{mime_type:"image/jpeg",data:b instanceof Blob?await blobToB64(b):b}});
+    parts.push({text:prompt});
+    const out=await callGemini(opts.fast?MODEL_FAST:MODEL_SMART,parts,
+      {responseMimeType:"application/json",maxOutputTokens:opts.maxTokens||4096,temperature:opts.temperature??0.7,thinkingConfig:{thinkingBudget:0}},opts.signal);
+    return parseJSON(out.map(p=>p.text||"").join(""));
+  },
+  async image(prompt,images,signal){
+    const parts=images.map(b64=>({inline_data:{mime_type:"image/jpeg",data:b64}}));
+    parts.push({text:prompt});
+    const out=await callGemini(MODEL_IMAGE,parts,{responseModalities:["TEXT","IMAGE"]},signal);
+    const img=out.find(p=>p.inline_data||p.inlineData);
+    const d=img?.inline_data||img?.inlineData;
+    if(!d)throw {code:"no_image"};
+    return "data:"+(d.mime_type||d.mimeType||"image/png")+";base64,"+d.data;
+  }
+};
+function aiCopy(e){
+  switch(e?.code){
+    case "no_key":return "Спершу додайте API-ключ (кнопка 🔑 угорі).";
+    case "bad_key":return "API-ключ не підходить. Перевірте його (кнопка 🔑 угорі).";
+    case "rate_limited":return "Вичерпано безкоштовний ліміт запитів. Спробуйте за хвилину або завтра.";
+    case "no_model":return "Ця модель недоступна для вашого ключа. Змініть назву моделі в коді.";
+    case "no_image":return "Модель не повернула зображення. Примірка доступна не на всіх тарифах.";
+    case "bad_request":return "API відхилив запит. Перевірте назви моделей у коді (MODEL_FAST, MODEL_SMART).";
+    case "refused":return "AI не зміг обробити цей запит. Спробуйте інше фото або умови.";
+    case "invalid_json":return "AI відповів у незрозумілому форматі. Спробуйте ще раз.";
+    case "cancelled":return "Зупинено.";
+    default:return "Не вдалося отримати відповідь від AI. Перевірте інтернет і спробуйте ще раз.";
+  }
+}
+function showAIError(e,el){
+  if(e?.code==="cancelled"){el.textContent="Зупинено.";el.classList.remove("err");return}
+  if(e?.code==="bad_key"||e?.code==="no_key")renderAIState();
+  el.textContent=aiCopy(e);el.classList.add("err");
+}
+function renderAIState(){
+  const on=!!getKey();
+  $("#aiState").textContent=on?"AI-стиліст готовий":"AI вимкнено — додайте ключ";
+  $("#genBtn").disabled=!on;
+}
+
+/* ---------- Погода (Open-Meteo, без ключа) ---------- */
+function wxFromCode(code,wind){
+  if(code>=71&&code<=77||code===85||code===86)return "Сніг";
+  if(code>=51&&code<=67||code>=80&&code<=82||code>=95)return "Дощ";
+  if(wind>=25)return "Вітер";
+  if(code<=1)return "Сонячно";
+  return "Хмарно";
+}
+async function geocode(name){
+  const r=await fetch("https://geocoding-api.open-meteo.com/v1/search?count=1&language=uk&format=json&name="+encodeURIComponent(name));
+  if(!r.ok)throw new Error("geo");
+  const d=await r.json();
+  if(!d.results?.length)throw new Error("notfound");
+  return d.results[0];
+}
+async function currentWeather(name){
+  const g=await geocode(name);
+  const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${g.latitude}&longitude=${g.longitude}&current=temperature_2m,weather_code,wind_speed_10m`);
+  if(!r.ok)throw new Error("wx");
+  const c=(await r.json()).current;
+  return {city:g.name,temp:Math.round(c.temperature_2m),weather:wxFromCode(c.weather_code,c.wind_speed_10m)};
+}
+async function forecast(name,days){
+  const g=await geocode(name);
+  const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${g.latitude}&longitude=${g.longitude}&daily=temperature_2m_max,temperature_2m_min,weather_code&forecast_days=${Math.min(16,days)}&timezone=auto`);
+  if(!r.ok)throw new Error("wx");
+  const d=(await r.json()).daily;
+  return {city:g.name,days:d.time.map((t,i)=>({date:t,max:Math.round(d.temperature_2m_max[i]),min:Math.round(d.temperature_2m_min[i]),weather:wxFromCode(d.weather_code[i],0)}))};
+}
+
+/* ---------- Аналітика гардеробу ---------- */
+const itemById=id=>state.items.find(i=>i.id===id);
+function daysUnworn(it){
+  if(it.lastWorn)return daysBetween(it.lastWorn,Date.now());
+  return it.createdAt?daysBetween(it.createdAt,Date.now()):0;
+}
+const isForgotten=it=>(it.wearCount>0)?daysUnworn(it)>=FORGOT_DAYS:daysUnworn(it)>=NEW_GRACE_DAYS;
+function forgottenItems(){
+  return state.items.filter(isForgotten).sort((a,b)=>daysUnworn(b)-daysUnworn(a));
+}
+function costPerWear(it){
+  if(!it.price||!(it.wearCount>0))return null;
+  return Math.round(it.price/it.wearCount);
+}
+function catalogText(items){
+  return items.map(i=>[i.id,i.name,CATS[i.category]?.label,i.color,STYLES[i.style],(i.seasons||[]).map(s=>SEASONS[s]).join("/"),
+    "тепло "+(i.warmth||2)+"/5","вдягали "+(i.wearCount||0)+" р."].join(" | ")).join("\n");
+}
+/** Скільки нових комбінацій додасть річ цієї категорії. */
+function newCombos(cat){
+  const n=c=>state.items.filter(i=>i.category===c).length;
+  const shoes=Math.max(1,n("shoes"));
+  if(cat==="top")return n("bottom")*shoes;
+  if(cat==="bottom")return n("top")*shoes;
+  if(cat==="dress")return shoes;
+  if(cat==="outer"||cat==="acc"||cat==="shoes")return n("top")*n("bottom")+n("dress");
+  return 0;
+}
+
+/* ---------- Рівні та челенджі ---------- */
+function levelOf(points){
+  let cur=LEVELS[0],next=null;
+  for(let i=0;i<LEVELS.length;i++){if(points>=LEVELS[i].p)cur=LEVELS[i];else{next=LEVELS[i];break}}
+  return {cur,next};
+}
+function addPoints(n,why){
+  state.points+=n;
+  if(why)toast(why+" +"+n+" балів");
+}
+const sig=ids=>[...ids].sort().join(",");
+function challengeProgress(ch){
+  const st=state.challenges[ch.id]||{};
+  const since=st.startedAt||0;
+  const log=state.wearLog.filter(w=>(w.at||0)>=since);
+  if(ch.id==="digitize")return state.items.length;
+  if(ch.id==="no-repeat"){
+    const seen=new Set(),days=new Set();
+    for(const w of log){const s=sig(w.items);if(seen.has(s))continue;seen.add(s);days.add(w.d)}
+    return days.size;
+  }
+  if(ch.id==="hero"){
+    const per={};
+    for(const w of log){const s=sig(w.items);for(const id of w.items){(per[id]=per[id]||new Set()).add(s)}}
+    const best=Object.entries(per).sort((a,b)=>b[1].size-a[1].size)[0];
+    return best?best[1].size:0;
+  }
+  if(ch.id==="revive"){
+    const target=new Set(st.targets||[]);
+    const worn=new Set();
+    for(const w of log)for(const id of w.items)if(target.has(id))worn.add(id);
+    return worn.size;
+  }
+  return 0;
+}
+function startChallenge(id){
+  const st={startedAt:Date.now()};
+  if(id==="revive")st.targets=forgottenItems().slice(0,12).map(i=>i.id);
+  state.challenges[id]=st;persist();
+  toast("Челендж почався. Успіхів!");
+}
+function claimChallenge(ch){
+  const st=state.challenges[ch.id];if(!st||st.claimed)return;
+  st.claimed=true;addPoints(ch.points,"Челендж пройдено!");persist();
+}
+
+/* ---------- Рендер ---------- */
+function tagHTML(it,opts={}){
   const c=CATS[it.category]||CATS.top;
   const pic=it.photo?`<img src="${esc(it.photo)}" alt="">`:`<span class="emo" aria-hidden="true">${c.emoji}</span>`;
-  return `<div class="thumb" style="--sw:${hexOk(it.hex)}">${pic}</div><div class="tname">${esc(it.name)}</div><div class="tmeta">${esc(it.color||c.label)}</div>`;
+  const badge=opts.dust&&isForgotten(it)?`<span class="dust">💤</span>`:"";
+  const cpw=costPerWear(it);
+  const meta=cpw!=null?`${cpw} грн за носіння`:(it.wearCount>0?`вдягали ${it.wearCount} р.`:(it.color||c.label));
+  return `<div class="thumb" style="--sw:${hexOk(it.hex)}">${pic}${badge}</div><div class="tname">${esc(it.name)}</div><div class="tmeta">${esc(meta)}</div>`;
 }
 function renderWardrobe(){
   const box=$("#wardrobeBody");
@@ -277,21 +596,28 @@ function renderWardrobe(){
       <div class="row"><button class="btn primary" data-act="add">Додати річ</button><button class="btn tape" data-act="demo">Завантажити приклад</button></div></div>`;
     return;
   }
-  const never=state.items.filter(i=>!(i.wearCount>0)).length;
   const counts={};state.items.forEach(i=>counts[i.category]=(counts[i.category]||0)+1);
   const list=state.items.filter(i=>state.filter==="all"||i.category===state.filter).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  const totalWears=state.items.reduce((s,i)=>s+(i.wearCount||0),0);
   box.innerHTML=`
-    <div class="stats"><div class="stat"><b>${state.items.length}</b><span>речей у гардеробі</span></div><div class="stat"><b>${never}</b><span>ще жодного разу не вдягали</span></div></div>
-    <button class="btn primary block" data-act="add" style="margin-bottom:14px">＋ Додати річ</button>
+    <div class="stats">
+      <div class="stat"><b>${state.items.length}</b><span>речей</span></div>
+      <div class="stat"><b>${forgottenItems().length}</b><span>давно без діла</span></div>
+      <div class="stat"><b>${totalWears}</b><span>носінь</span></div>
+    </div>
+    <div class="row" style="margin-bottom:14px">
+      <button class="btn primary" data-act="add" style="flex:1">＋ Додати річ</button>
+      <button class="btn tape" data-act="buy" style="flex:1">🛍️ Купувати?</button>
+    </div>
     <div class="chips" role="group" aria-label="Фільтр за категорією">
       <button class="chip" data-filter="all" aria-pressed="${state.filter==="all"}">Усе</button>
       ${Object.entries(CATS).filter(([k])=>counts[k]).map(([k,c])=>`<button class="chip" data-filter="${k}" aria-pressed="${state.filter===k}">${c.label} · ${counts[k]}</button>`).join("")}
     </div>
-    <div class="grid">${list.map(it=>`<button class="tag" data-item="${esc(it.id)}" aria-label="${esc(it.name)}, редагувати">${tagHTML(it)}</button>`).join("")}</div>`;
+    <div class="grid">${list.map(it=>`<button class="tag" data-item="${esc(it.id)}" aria-label="${esc(it.name)}, редагувати">${tagHTML(it,{dust:true})}</button>`).join("")}</div>`;
 }
 function lookHTML(o,opts){
-  const items=(o.items||[]).map(id=>state.items.find(i=>i.id===id)).filter(Boolean);
-  if(!items.length) return "";
+  const items=(o.items||[]).map(itemById).filter(Boolean);
+  if(!items.length)return "";
   const meta=opts.meta?`<div class="meta">${esc(opts.meta)}</div>`:"";
   return `<article class="look ${opts.fresh?"fresh":""}">
     <h2>${esc(o.title)}</h2>${meta}
@@ -302,75 +628,93 @@ function lookHTML(o,opts){
 function renderResults(fresh){
   const r=state.results,box=$("#results");
   if(!r){box.innerHTML="";return}
+  const label=[r.city,tempLabel(r.temp),r.weather,r.event].filter(Boolean).join(", ");
   box.innerHTML=(r.missing?`<div class="missing"><b>Чого бракує гардеробу</b>${esc(r.missing)}</div>`:"")+
-    r.outfits.map((o,i)=>lookHTML(o,{fresh,actions:`<button class="btn tape" data-save="${i}">${o.saved?"Збережено ✓":"Зберегти образ"}</button><button class="btn" data-wear-res="${i}">Вдягну сьогодні</button>`})).join("")+
+    r.outfits.map((o,i)=>lookHTML(o,{fresh,meta:label,
+      actions:`<button class="btn tape sm" data-save="${i}">${o.saved?"Збережено ✓":"Зберегти"}</button>
+               <button class="btn sm" data-wear-res="${i}">Вдягну сьогодні</button>
+               <button class="btn sm" data-try-res="${i}">Приміряти</button>`})).join("")+
     `<button class="btn block" id="moreBtn">Інші варіанти</button>`;
 }
 function renderSaved(){
   const box=$("#savedBody");
   const list=[...state.outfits].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   if(!list.length){box.innerHTML=`<div class="empty"><p>Тут з'являться образи, які ви збережете після підбору.</p><button class="btn primary" data-goto="outfit">Підібрати образ</button></div>`;return}
-  box.innerHTML=list.map(o=>lookHTML(o,{meta:[o.event,o.temp!=null?(o.temp>0?"+":"")+o.temp+"°":"",o.weather].filter(Boolean).join(", "),
-    actions:`<button class="btn tape" data-wear-saved="${esc(o.id)}">Вдягну сьогодні</button><button class="btn ghost danger" data-del-outfit="${esc(o.id)}">Видалити</button>`})).join("");
+  box.innerHTML=list.map(o=>lookHTML(o,{meta:[o.city,o.event,o.temp!=null?tempLabel(o.temp):"",o.weather].filter(Boolean).join(", "),
+    actions:`<button class="btn tape sm" data-wear-saved="${esc(o.id)}">Вдягну сьогодні</button>
+             <button class="btn sm" data-try-saved="${esc(o.id)}">Приміряти</button>
+             <button class="btn ghost danger sm" data-del-outfit="${esc(o.id)}">Видалити</button>`})).join("");
 }
-function renderAIState(){
-  const el=$("#aiState");
-  if(state.aiOff||!state.sample) el.textContent="Додайте API-ключ 🔑, щоб увімкнути AI";
-  else el.textContent=state.canImages?"AI-стиліст готовий":"AI готовий, фото заповнюйте вручну";
-  $("#genBtn").disabled=!state.sample||state.aiOff;
+function renderMe(){
+  const {cur,next}=levelOf(state.points);
+  const pct=next?Math.min(100,Math.round((state.points-cur.p)/(next.p-cur.p)*100)):100;
+  const p=state.profile;
+  const forgotten=forgottenItems().slice(0,8);
+  $("#meBody").innerHTML=`
+    <div class="level">
+      <div class="lv">${esc(cur.name)}</div>
+      <div class="pts">${state.points} балів${next?` · до рівня ${esc(next.name)} ще ${next.p-state.points}`:" · максимальний рівень"}</div>
+      <div class="meter"><i style="width:${pct}%"></i></div>
+    </div>
+
+    <div class="card">
+      <h3>Профіль стилю</h3>
+      ${p?`<p style="margin:0 0 6px"><b>${esc(p.style)}</b></p>
+          <p style="margin:0 0 6px;font-size:.9rem">Улюблені кольори: ${esc(p.colors)}</p>
+          <p style="margin:0 0 6px;font-size:.9rem">Найчастіше носите: ${esc(p.favorite)}</p>
+          <p class="lead" style="margin:8px 0 0">${esc(p.advice)}</p>`
+        :`<p class="lead" style="margin:0 0 10px">AI проаналізує ваш гардероб і опише ваш стиль, а далі підбиратиме образи саме під нього.</p>`}
+      <div class="status" id="profStatus" role="status" aria-live="polite"></div>
+      <button class="btn block" data-act="profile">${p?"Оновити аналіз":"Проаналізувати мій стиль"}</button>
+    </div>
+
+    <div class="card">
+      <h3>Челенджі</h3>
+      ${CHALLENGES.map(ch=>{
+        const st=state.challenges[ch.id];
+        const val=st?Math.min(ch.goal,challengeProgress(ch)):0;
+        const done=val>=ch.goal;
+        return `<div class="ch">
+          <b>${esc(ch.title)}</b><small>${esc(ch.hint)}</small>
+          ${st?`<div class="meter"><i style="width:${Math.round(val/ch.goal*100)}%"></i></div>
+                <div class="bot"><span class="cnt">${val} з ${ch.goal}</span>
+                ${st.claimed?`<span class="done">Пройдено ✓</span>`
+                  :done?`<button class="btn tape sm" data-claim="${ch.id}">Забрати ${ch.points} балів</button>`
+                  :`<span class="cnt">+${ch.points} балів</span>`}</div>`
+            :`<div class="bot"><span class="cnt">+${ch.points} балів</span><button class="btn sm" data-start="${ch.id}">Почати</button></div>`}
+        </div>`}).join("")}
+    </div>
+
+    <div class="card">
+      <h3>Забуті речі</h3>
+      ${forgotten.length?`<p class="lead" style="margin:0 0 4px">Ці речі давно не були в образах. Натисніть, щоб знайти нові комбінації.</p>
+        <div class="rail" style="padding-top:22px">${forgotten.map(it=>`<div class="hang"><button class="tag" data-revive="${esc(it.id)}" aria-label="Знайти образи з ${esc(it.name)}">${tagHTML(it)}</button></div>`).join("")}</div>`
+        :`<p class="lead" style="margin:0">Чудово: усі речі були в ділі за останні ${FORGOT_DAYS} днів.</p>`}
+    </div>
+
+    <div class="card">
+      <h3>Розумна валіза</h3>
+      <p class="lead" style="margin:0 0 10px">Поїздка на кілька днів? AI складе образи за прогнозом погоди й мінімумом речей.</p>
+      <button class="btn block" data-act="pack">Спакувати валізу</button>
+    </div>
+
+    <div class="card">
+      <h3>Фото для примірки</h3>
+      <p class="lead" style="margin:0 0 10px">Потрібне для функції «Приміряти» на картці образу. Зберігається лише у вашому браузері.</p>
+      ${state.userPhoto?`<div class="tryout"><img src="${esc(state.userPhoto)}" alt="Ваше фото"></div>`:""}
+      <label class="btn block" style="cursor:pointer">${state.userPhoto?"Замінити фото":"Завантажити фото"}<input type="file" accept="image/*" id="meIn" hidden></label>
+    </div>`;
 }
 
-/* ---------- Tabs ---------- */
+/* ---------- Вкладки ---------- */
 function showTab(name){
   document.querySelectorAll("[role=tab]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===name)));
-  ["wardrobe","outfit","saved"].forEach(t=>$("#tab-"+t).hidden=t!==name);
+  ["wardrobe","outfit","saved","me"].forEach(t=>$("#tab-"+t).hidden=t!==name);
   window.scrollTo({top:0});
 }
 document.querySelectorAll("[role=tab]").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
 
-/* ---------- Item dialog ---------- */
-const dlg=$("#itemDlg");
-$("#fCat").innerHTML=Object.entries(CATS).map(([k,c])=>`<option value="${k}">${c.label}</option>`).join("");
-$("#fStyle").innerHTML=Object.entries(STYLES).map(([k,s])=>`<option value="${k}">${s}</option>`).join("");
-$("#fSeasons").innerHTML=Object.entries(SEASONS).map(([k,s])=>`<label><input type="checkbox" value="${k}">${s}</label>`).join("");
-$("#fWarm").oninput=e=>$("#fWarmOut").textContent=e.target.value;
-
-function setPhotoPreview(src){
-  const box=$("#photoBox");box.querySelector("img")?.remove();
-  $("#photoHint").hidden=!!src;
-  if(src){const im=document.createElement("img");im.src=src;im.alt="Фото речі";box.appendChild(im)}
-}
-function fillForm(it){
-  $("#fName").value=it.name||"";$("#fCat").value=it.category||"top";$("#fStyle").value=it.style||"casual";
-  $("#fColor").value=it.color||"";$("#fHex").value=hexOk(it.hex);
-  document.querySelectorAll("#fSeasons input").forEach(c=>c.checked=(it.seasons||[]).includes(c.value));
-  $("#fWarm").value=it.warmth||2;$("#fWarmOut").textContent=it.warmth||2;
-}
-function openItem(id){
-  const it=id?state.items.find(i=>i.id===id):null;
-  state.editing=it;state.draftPhoto=it?.photo||null;
-  $("#dlgTitle").textContent=it?"Редагувати річ":"Нова річ";
-  $("#delItem").hidden=!it;$("#aiStatus").textContent="";$("#aiStatus").classList.remove("err");
-  $("#photoIn").value="";setPhotoPreview(state.draftPhoto);
-  fillForm(it||{seasons:["spring","autumn"]});
-  dlg.showModal();
-}
-$("#cancelItem").onclick=()=>dlg.close();
-$("#saveItem").onclick=async()=>{
-  const name=$("#fName").value.trim();
-  if(!name){$("#aiStatus").textContent="Вкажіть назву речі.";$("#aiStatus").classList.add("err");$("#fName").focus();return}
-  const base=state.editing||{id:newId(),createdAt:Date.now(),wearCount:0};
-  const it={...base,name,category:$("#fCat").value,style:$("#fStyle").value,color:$("#fColor").value.trim(),hex:$("#fHex").value,
-    seasons:[...document.querySelectorAll("#fSeasons input:checked")].map(c=>c.value),warmth:Number($("#fWarm").value),photo:state.draftPhoto||null};
-  const btn=$("#saveItem");btn.disabled=true;
-  const ok=await safe(Store.put("items",it));btn.disabled=false;
-  if(ok){dlg.close();toast(state.editing?"Зміни збережено":"Річ додано в гардероб")}
-};
-$("#delItem").onclick=async()=>{
-  if(!state.editing||!confirm("Видалити цю річ з гардеробу?"))return;
-  if(await safe(Store.del("items",state.editing.id),"Не вдалося видалити.")){dlg.close();toast("Річ видалено")}
-};
-
+/* ---------- Робота з фото ---------- */
 async function loadImage(file){
   try{return await createImageBitmap(file,{imageOrientation:"from-image"})}
   catch(e){return await new Promise((res,rej)=>{const u=URL.createObjectURL(file);const im=new Image();im.onload=()=>res(im);im.onerror=()=>rej(e);im.src=u})}
@@ -380,199 +724,376 @@ function toCanvas(img,max){
   const c=document.createElement("canvas");c.width=Math.round(w*s);c.height=Math.round(h*s);
   const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);return c;
 }
+const toBlob=(canvas,q)=>new Promise(r=>canvas.toBlob(r,"image/jpeg",q));
+
+/* ---------- Діалог речі ---------- */
+const itemDlg=$("#itemDlg");
+$("#fCat").innerHTML=Object.entries(CATS).map(([k,c])=>`<option value="${k}">${c.label}</option>`).join("");
+$("#fStyle").innerHTML=Object.entries(STYLES).map(([k,s])=>`<option value="${k}">${s}</option>`).join("");
+$("#fSeasons").innerHTML=Object.entries(SEASONS).map(([k,s])=>`<label><input type="checkbox" value="${k}">${s}</label>`).join("");
+$("#fWarm").oninput=e=>$("#fWarmOut").textContent=e.target.value;
+
+function setPreview(boxSel,hintSel,src){
+  const box=$(boxSel);box.querySelector("img")?.remove();
+  $(hintSel).hidden=!!src;
+  if(src){const im=document.createElement("img");im.src=src;im.alt="Фото";box.appendChild(im)}
+}
+function fillForm(it){
+  $("#fName").value=it.name||"";$("#fCat").value=CATS[it.category]?it.category:"top";$("#fStyle").value=STYLES[it.style]?it.style:"casual";
+  $("#fColor").value=it.color||"";$("#fHex").value=hexOk(it.hex);$("#fPrice").value=it.price||"";
+  document.querySelectorAll("#fSeasons input").forEach(c=>c.checked=(it.seasons||[]).includes(c.value));
+  const w=Math.min(5,Math.max(1,Number(it.warmth)||2));
+  $("#fWarm").value=w;$("#fWarmOut").textContent=w;
+}
+function openItem(id){
+  const it=id?itemById(id):null;
+  state.editing=it;state.draftPhoto=it?.photo||null;
+  $("#dlgTitle").textContent=it?"Редагувати річ":"Нова річ";
+  $("#delItem").hidden=!it;
+  $("#aiStatus").textContent="";$("#aiStatus").classList.remove("err");
+  const cpw=it?costPerWear(it):null;
+  $("#cpwStatus").textContent=it?`Вдягали ${it.wearCount||0} разів${cpw!=null?`, вартість одного носіння ${cpw} грн`:""}`:"";
+  $("#photoIn").value="";setPreview("#photoBox","#photoHint",state.draftPhoto);
+  fillForm(it||{seasons:["spring","autumn"]});
+  itemDlg.showModal();
+}
+$("#cancelItem").onclick=()=>itemDlg.close();
+$("#saveItem").onclick=()=>{
+  const name=$("#fName").value.trim();
+  if(!name){const st=$("#aiStatus");st.textContent="Вкажіть назву речі.";st.classList.add("err");$("#fName").focus();return}
+  const base=state.editing||{id:newId(),createdAt:Date.now(),wearCount:0};
+  const it={...base,name,category:$("#fCat").value,style:$("#fStyle").value,color:$("#fColor").value.trim(),hex:$("#fHex").value,
+    price:Number($("#fPrice").value)||0,seasons:[...document.querySelectorAll("#fSeasons input:checked")].map(c=>c.value),
+    warmth:Number($("#fWarm").value),photo:state.draftPhoto||null};
+  const isNew=!state.editing;
+  const i=state.items.findIndex(x=>x.id===it.id);
+  if(i>=0)state.items[i]=it;else state.items.push(it);
+  if(!persist()){if(i<0)state.items.pop();return}
+  if(isNew)addPoints(5,"Річ додано.");
+  persist();itemDlg.close();
+  toast(isNew?"Річ додано в гардероб":"Зміни збережено");
+};
+$("#delItem").onclick=()=>{
+  if(!state.editing||!confirm("Видалити цю річ з гардеробу?"))return;
+  state.items=state.items.filter(x=>x.id!==state.editing.id);
+  persist();itemDlg.close();toast("Річ видалено");
+};
+
+const RECOGNIZE_PROMPT=`На фото одна річ одягу, взуття або аксесуар. Визнач її.
+Відповідай лише JSON-об'єктом:
+{"name":"коротка назва українською, 2-4 слова, з малої літери","category":"top|bottom|dress|outer|shoes|acc","color":"основний колір українською","hex":"#rrggbb","style":"casual|office|sport|evening|street","seasons":["spring","summer","autumn","winter"],"warmth":1}
+Пояснення: top = футболки, сорочки, светри, худі; bottom = штани, джинси, спідниці, шорти; dress = сукні та комбінезони; outer = куртки, пальта, тренчі, піджаки; shoes = взуття; acc = сумки, шарфи, шапки, прикраси. warmth від 1 (дуже легка) до 5 (для морозу). seasons — лише ті, коли річ доречна.
+Якщо на фото немає одягу, поверни {"error":"not_clothing"}.`;
+
 $("#photoIn").onchange=async e=>{
   const file=e.target.files?.[0];if(!file)return;
   const st=$("#aiStatus");st.classList.remove("err");
   let img;
   try{img=await loadImage(file)}catch(err){st.textContent="Це фото не вдалося відкрити. Спробуйте JPG або PNG.";st.classList.add("err");return}
   state.draftPhoto=toCanvas(img,360).toDataURL("image/jpeg",0.72);
-  setPhotoPreview(state.draftPhoto);
-  if(!state.sample||state.aiOff||!state.canImages){st.textContent="Заповніть поля вручну.";return}
-  const blob=await new Promise(r=>toCanvas(img,1024).toBlob(r,"image/jpeg",0.85));
+  setPreview("#photoBox","#photoHint",state.draftPhoto);
+  if(!getKey()){st.textContent="Без ключа AI — заповніть поля вручну.";return}
   st.innerHTML=`<span class="spinner" aria-hidden="true"></span> AI розпізнає річ…`;
   try{
-    const r=await state.sample.json(
-`На фото одна річ одягу, взуття або аксесуар із гардеробу користувача. Визнач її.
-Відповідай лише JSON-об'єктом такого вигляду:
-{"name":"коротка назва українською, 2-4 слова, з малої літери","category":"top|bottom|dress|outer|shoes|acc","color":"основний колір українською","hex":"#rrggbb","style":"casual|office|sport|evening|street","seasons":["spring","summer","autumn","winter"],"warmth":1}
-Пояснення: top = футболки, сорочки, светри, худі; bottom = штани, джинси, спідниці, шорти; dress = сукні та комбінезони; outer = куртки, пальта, тренчі, піджаки; shoes = взуття; acc = сумки, шарфи, шапки, прикраси. warmth від 1 (дуже легка) до 5 (для морозу). seasons — лише ті, коли річ доречна.
-Якщо на фото немає одягу, поверни {"error":"not_clothing"}.`,
-      {images:[blob],modelTier:"quick"});
+    const blob=await toBlob(toCanvas(img,1024),0.85);
+    const r=await AI.json(RECOGNIZE_PROMPT,{images:[blob],fast:true,temperature:0.2,maxTokens:600});
     if(r?.error){st.textContent="Схоже, на фото немає одягу. Спробуйте інше фото або заповніть поля вручну.";st.classList.add("err");return}
-    fillForm({name:r.name,category:CATS[r.category]?r.category:"top",style:STYLES[r.style]?r.style:"casual",color:r.color,hex:r.hex,
-      seasons:Array.isArray(r.seasons)?r.seasons.filter(s=>SEASONS[s]):[],warmth:Math.min(5,Math.max(1,Number(r.warmth)||2))});
+    fillForm({...r,seasons:Array.isArray(r.seasons)?r.seasons.filter(s=>SEASONS[s]):[]});
     st.textContent="Готово. Перевірте поля й збережіть.";
-  }catch(err){handleAIError(err,st)}
+  }catch(err){showAIError(err,st)}
 };
 
-function aiCopy(e){
-  switch(e?.code){
-    case "not_granted":case "sampling_disabled":case "not_declared":case "capability_disabled":case "capability_removed":return "AI зараз недоступний. Можна користуватися гардеробом без нього.";
-    case "images_unavailable":return "Розпізнавання фото тут недоступне. Заповніть поля вручну.";
-    case "image_rejected":return "Це фото не вдалося обробити. Спробуйте інше.";
-    case "rate_limited":return "Забагато запитів. Спробуйте трохи пізніше.";
-    case "session_expired":return "Сесія завершилась. Увійдіть у Claude знову.";
-    case "no_key":return "Спершу додайте API-ключ (кнопка 🔑 угорі).";
-    case "bad_key":return "API-ключ не підходить. Перевірте його (кнопка 🔑 угорі).";
-    case "bad_request":return "API відхилив запит. Перевірте назву моделі в коді та баланс на console.anthropic.com.";
-    case "invalid_json":return "AI відповів у незрозумілому форматі. Спробуйте ще раз.";
-    case "refused":return "AI не зміг обробити цей запит. Змініть умови й спробуйте ще раз.";
-    case "prompt_too_large":return "Гардероб завеликий для одного запиту. Видаліть кілька речей.";
-    default:return "Не вдалося отримати відповідь від AI. Спробуйте ще раз.";
-  }
-}
-function handleAIError(e,el){
-  if(e?.code==="cancelled"){el.textContent="Зупинено.";return}
-  if(e?.code==="bad_key"||e?.code==="no_key"){state.sample=null;renderAIState()}
-  if(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)){state.aiOff=true;renderAIState()}
-  if(e?.code==="images_unavailable"){state.canImages=false;renderAIState()}
-  el.textContent=aiCopy(e);el.classList.add("err");
-}
-
-/* ---------- Demo wardrobe ---------- */
+/* ---------- Демо-гардероб ---------- */
+// назва, категорія, колір, hex, стиль, сезони, теплота, ціна, скільки разів вдягали, днів тому востаннє (null = жодного разу), днів тому куплено
 const DEMO=[
-  ["біла футболка","top","білий","#F2F2EF","casual",["spring","summer"],1],
-  ["блакитна сорочка","top","блакитний","#9CC3E4","office",["spring","summer","autumn"],2],
-  ["сірий светр","top","сірий","#9A9A9E","casual",["autumn","winter"],4],
-  ["джинси прямого крою","bottom","синій","#3B5B8C","casual",["spring","autumn","winter"],2],
-  ["чорні брюки","bottom","чорний","#26232B","office",["spring","autumn","winter"],2],
-  ["спідниця міді","bottom","бежевий","#D8C3A5","casual",["spring","summer","autumn"],1],
-  ["чорна сукня","dress","чорний","#1E1B22","evening",["spring","summer","autumn"],2],
-  ["тренч","outer","пісочний","#C8AD7F","office",["spring","autumn"],3],
-  ["пуховик","outer","оливковий","#5E6B3D","casual",["winter"],5],
-  ["білі кросівки","shoes","білий","#EDEDEA","casual",["spring","summer","autumn"],1],
-  ["чорні лофери","shoes","чорний","#2A262E","office",["spring","autumn"],1],
-  ["шкіряна сумка","acc","коричневий","#7A4A2A","casual",["spring","summer","autumn","winter"],1]
+  ["біла футболка","top","білий","#F2F2EF","casual",["spring","summer"],1,450,12,3,120],
+  ["блакитна сорочка","top","блакитний","#9CC3E4","office",["spring","summer","autumn"],2,1200,6,10,150],
+  ["сірий светр","top","сірий","#9A9A9E","casual",["autumn","winter"],4,1400,4,40,300],
+  ["чорний худі","top","чорний","#2B2830","street",["autumn","winter"],3,1600,9,5,200],
+  ["джинси прямого крою","bottom","синій","#3B5B8C","casual",["spring","autumn","winter"],2,1800,20,2,240],
+  ["чорні брюки","bottom","чорний","#26232B","office",["spring","autumn","winter"],2,1500,7,12,180],
+  ["спідниця міді","bottom","бежевий","#D8C3A5","casual",["spring","summer","autumn"],1,900,1,70,160],
+  ["чорна сукня","dress","чорний","#1E1B22","evening",["spring","summer","autumn"],2,2200,2,90,400],
+  ["тренч","outer","пісочний","#C8AD7F","office",["spring","autumn"],3,3500,5,25,330],
+  ["пуховик","outer","оливковий","#5E6B3D","casual",["winter"],5,4800,0,null,60],
+  ["білі кросівки","shoes","білий","#EDEDEA","casual",["spring","summer","autumn"],1,2400,18,2,210],
+  ["чорні лофери","shoes","чорний","#2A262E","office",["spring","autumn"],1,2100,3,45,280],
+  ["шкіряна сумка","acc","коричневий","#7A4A2A","casual",["spring","summer","autumn","winter"],1,1900,0,null,45]
 ];
-async function loadDemo(btn){
-  if(btn)btn.disabled=true;
+const DAY=86400000;
+function loadDemo(){
   const now=Date.now();
-  for(let i=0;i<DEMO.length;i++){
-    const [name,category,color,hex,style,seasons,warmth]=DEMO[i];
-    const ok=await safe(Store.put("items",{id:newId(),name,category,color,hex,style,seasons,warmth,photo:null,wearCount:0,createdAt:now-i}));
-    if(!ok)break;
-  }
-  toast("Приклад гардеробу завантажено");
+  DEMO.forEach(([name,category,color,hex,style,seasons,warmth,price,wearCount,lastAgo,boughtAgo])=>{
+    state.items.push({id:newId(),name,category,color,hex,style,seasons,warmth,price,photo:null,
+      wearCount,lastWorn:lastAgo==null?null:now-lastAgo*DAY,createdAt:now-boughtAgo*DAY});
+  });
+  persist();toast("Приклад гардеробу завантажено");
 }
 
-/* ---------- Outfit generation ---------- */
+/* ---------- Підбір образів ---------- */
 function renderChoiceChips(){
   $("#events").innerHTML=EVENTS.map(e=>`<button class="chip" role="radio" aria-checked="${state.event===e}" data-ev="${e}">${e}</button>`).join("");
   $("#weather").innerHTML=WEATHER.map(w=>`<button class="chip" role="radio" aria-checked="${state.weather===w}" data-wx="${w}">${w}</button>`).join("");
 }
-const tempLabel=v=>(v>0?"+":"")+v+"°";
 $("#temp").oninput=e=>$("#tempOut").textContent=tempLabel(Number(e.target.value));
+$("#city").oninput=e=>{state.city=e.target.value};
+$("#wxBtn").onclick=async()=>{
+  const st=$("#wxStatus");st.classList.remove("err");
+  const name=$("#city").value.trim();
+  if(!name){st.textContent="Впишіть місто.";st.classList.add("err");return}
+  st.innerHTML=`<span class="spinner" aria-hidden="true"></span> Дивлюся погоду…`;
+  try{
+    const w=await currentWeather(name);
+    state.city=w.city;state.weather=w.weather;
+    $("#city").value=w.city;$("#temp").value=w.temp;$("#tempOut").textContent=tempLabel(w.temp);
+    renderChoiceChips();persist();
+    st.textContent=`${w.city}: ${tempLabel(w.temp)}, ${w.weather.toLowerCase()}`;
+  }catch(e){st.textContent=e.message==="notfound"?"Такого міста не знайшлося. Спробуйте іншу назву.":"Не вдалося отримати погоду. Перевірте інтернет.";st.classList.add("err")}
+};
 
-async function generate(fresh){
+async function generate(opts={}){
   const st=$("#genStatus");st.classList.remove("err");
-  if(!state.sample||state.aiOff){st.textContent="Спершу додайте API-ключ (кнопка 🔑 угорі).";return}
-  if(state.items.length<3){st.innerHTML=`Для підбору потрібно хоча б 3 речі. <button class="btn ghost" data-goto="wardrobe">Додати речі</button>`;return}
+  if(!getKey()){st.textContent="Спершу додайте API-ключ (кнопка 🔑 угорі).";st.classList.add("err");return}
+  if(state.items.length<3){st.innerHTML=`Для підбору потрібно хоча б 3 речі. <button class="btn ghost sm" data-goto="wardrobe">Додати речі</button>`;return}
   const temp=Number($("#temp").value);
-  const catalog=state.items.map(i=>[i.id,i.name,CATS[i.category]?.label,i.color,STYLES[i.style],(i.seasons||[]).map(s=>SEASONS[s]).join("/"),"тепло "+(i.warmth||2)+"/5","вдягали "+(i.wearCount||0)+" р."].join(" | ")).join("\n");
+  const force=opts.forceItem?itemById(opts.forceItem):null;
   const prompt=`Ти AI-стиліст застосунку-гардеробу. Склади 3 різні образи ТІЛЬКИ з речей користувача нижче.
-Умови: подія — ${state.event}; температура ${tempLabel(temp)}C; погода — ${state.weather}.
-Правила: кожен образ або сукня, або верх + низ; додай верхній одяг, якщо холодніше +15°C, дощ, сніг чи вітер; додай взуття, якщо воно є; аксесуар за бажанням. Враховуй теплоту речей і сезон. Частіше використовуй речі, які рідко вдягали. Образи мають відрізнятися. Якщо для умов бракує ключової речі, склади найкраще з наявного і скажи про це в missing.
+Умови: подія — ${state.event}; температура ${tempLabel(temp)}C; погода — ${state.weather}${state.city?"; місто — "+state.city:""}.
+${state.profile?`Стиль користувача: ${state.profile.style}. Улюблені кольори: ${state.profile.colors}. Враховуй це.`:""}
+${force?`ОБОВ'ЯЗКОВО використай у кожному образі річ з id ${force.id} (${force.name}) — користувач давно її не носив.`:""}
+Правила: кожен образ або сукня, або верх + низ; додай верхній одяг, якщо холодніше +15°C, дощ, сніг чи вітер; додай взуття, якщо воно є; аксесуар за бажанням. Враховуй теплоту речей і сезон. Частіше бери речі, які рідко вдягали. Образи мають відрізнятися. Якщо бракує ключової речі, склади найкраще з наявного і скажи про це в missing.
 Речі (id | назва | категорія | колір | стиль | сезони | теплота | скільки разів вдягали):
-${catalog}
+${catalogText(state.items)}
 
 Відповідай лише JSON:
 {"outfits":[{"title":"коротка назва образу","items":["id","id"],"why":"1-2 речення, чому це пасує до події й погоди","tip":"коротка порада щодо стилю або порожній рядок"}],"missing":"одне речення: яка річ найбільше розширила б цей гардероб"}
 Усі тексти українською.`;
   state.ctl?.abort();state.ctl=new AbortController();
-  $("#genBtn").disabled=true;$("#stopBtn").hidden=false;$("#moreBtn")&&($("#moreBtn").disabled=true);
+  $("#genBtn").disabled=true;$("#stopBtn").hidden=false;
   st.innerHTML=`<span class="spinner" aria-hidden="true"></span> Стиліст переглядає ваш гардероб…`;
   try{
-    const r=await state.sample.json(prompt,fresh?{signal:state.ctl.signal,cache:false}:{signal:state.ctl.signal});
+    const r=await AI.json(prompt,{signal:state.ctl.signal,temperature:opts.fresh?1:0.7});
     const known=new Set(state.items.map(i=>i.id));
-    const outfits=(Array.isArray(r?.outfits)?r.outfits:[]).map(o=>({title:String(o.title||"Образ"),why:String(o.why||""),tip:String(o.tip||""),
-      items:[...new Set((Array.isArray(o.items)?o.items:[]).map(String))].filter(id=>known.has(id))})).filter(o=>o.items.length>=2);
+    const outfits=(Array.isArray(r?.outfits)?r.outfits:[]).map(o=>({
+      title:String(o.title||"Образ"),why:String(o.why||""),tip:String(o.tip||""),
+      items:[...new Set((Array.isArray(o.items)?o.items:[]).map(String))].filter(id=>known.has(id))
+    })).filter(o=>o.items.length>=2);
     if(!outfits.length){st.textContent="Не вдалося скласти образи з цих речей. Додайте більше одягу або змініть умови.";st.classList.add("err");return}
-    state.results={outfits,missing:String(r.missing||""),event:state.event,temp,weather:state.weather};
+    state.results={outfits,missing:String(r.missing||""),event:state.event,temp,weather:state.weather,city:state.city};
     st.textContent="";renderResults(true);
-  }catch(e){handleAIError(e,st)}
-  finally{$("#genBtn").disabled=!state.sample||state.aiOff;$("#stopBtn").hidden=true;$("#moreBtn")&&($("#moreBtn").disabled=false)}
+  }catch(e){showAIError(e,st)}
+  finally{$("#genBtn").disabled=!getKey();$("#stopBtn").hidden=true}
 }
-$("#genBtn").onclick=()=>generate(false);
+$("#genBtn").onclick=()=>generate();
 $("#stopBtn").onclick=()=>state.ctl?.abort();
 
-async function wear(ids){
-  const now=Date.now();
-  for(const id of ids){
-    const it=state.items.find(i=>i.id===id);if(!it)continue;
-    const ok=await safe(Store.put("items",{...it,wearCount:(it.wearCount||0)+1,lastWorn:now}));if(!ok)return;
-  }
-  toast("Гарного дня! Відмітили ці речі як вдягнуті");
+/* ---------- Носіння ---------- */
+function wear(ids){
+  const now=Date.now(),d=today();
+  ids.forEach(id=>{const it=itemById(id);if(it){it.wearCount=(it.wearCount||0)+1;it.lastWorn=now}});
+  state.wearLog.push({d,at:now,items:[...ids]});
+  if(state.wearLog.length>400)state.wearLog=state.wearLog.slice(-400);
+  const firstToday=state.wearLog.filter(w=>w.d===d).length===1;
+  if(firstToday)state.points+=5;
+  persist();
+  toast(firstToday?"Записано. Гарного дня! +5 балів":"Записано");
 }
 
-/* ---------- Event delegation ---------- */
+/* ---------- Профіль стилю ---------- */
+async function analyseStyle(){
+  const st=$("#profStatus");if(!st)return;
+  st.classList.remove("err");
+  if(!getKey()){st.textContent=aiCopy({code:"no_key"});st.classList.add("err");return}
+  if(state.items.length<5){st.textContent="Додайте хоча б 5 речей, щоб аналіз був змістовним.";st.classList.add("err");return}
+  st.innerHTML=`<span class="spinner" aria-hidden="true"></span> AI вивчає ваш гардероб…`;
+  try{
+    const r=await AI.json(`Проаналізуй гардероб користувача і опиши його стиль.
+Речі (id | назва | категорія | колір | стиль | сезони | теплота | скільки разів вдягали):
+${catalogText(state.items)}
+
+Відповідай лише JSON:
+{"style":"стиль у 2-3 словах, напр. Casual × Minimal","colors":"3-4 улюблені кольори через кому","favorite":"що людина носить найчастіше, коротко","advice":"1-2 речення поради: чого бракує гардеробу і на що звернути увагу"}
+Усі тексти українською, окрім назв стилів.`,{temperature:0.5,maxTokens:800});
+    state.profile={style:String(r.style||"—"),colors:String(r.colors||"—"),favorite:String(r.favorite||"—"),advice:String(r.advice||""),at:Date.now()};
+    addPoints(15,"Профіль стилю готовий.");persist();
+  }catch(e){showAIError(e,st)}
+}
+
+/* ---------- Купувати чи ні ---------- */
+const buyDlg=$("#buyDlg");
+function openBuy(){
+  $("#buyIn").value="";$("#buyPrice").value="";$("#buyResult").innerHTML="";
+  $("#buyStatus").textContent="";$("#buyStatus").classList.remove("err");
+  setPreview("#buyBox","#buyHint",null);
+  buyDlg.showModal();
+}
+$("#buyClose").onclick=()=>buyDlg.close();
+$("#buyIn").onchange=async e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  const st=$("#buyStatus");st.classList.remove("err");$("#buyResult").innerHTML="";
+  let img;
+  try{img=await loadImage(file)}catch(err){st.textContent="Це фото не вдалося відкрити.";st.classList.add("err");return}
+  setPreview("#buyBox","#buyHint",toCanvas(img,360).toDataURL("image/jpeg",0.72));
+  if(!getKey()){st.textContent=aiCopy({code:"no_key"});st.classList.add("err");return}
+  if(state.items.length<4){st.textContent="Спершу оцифруйте хоча б 4 речі, інакше порівнювати нема з чим.";st.classList.add("err");return}
+  st.innerHTML=`<span class="spinner" aria-hidden="true"></span> Порівнюю з вашим гардеробом…`;
+  try{
+    const blob=await toBlob(toCanvas(img,1024),0.85);
+    const price=Number($("#buyPrice").value)||0;
+    const r=await AI.json(`На фото річ, яку користувач роздумує купити${price?` за ${price} грн`:""}. Порівняй її з його гардеробом.
+Гардероб (id | назва | категорія | колір | стиль | сезони | теплота | скільки разів вдягали):
+${catalogText(state.items)}
+
+Відповідай лише JSON:
+{"name":"коротка назва речі українською","category":"top|bottom|dress|outer|shoes|acc","color":"колір українською","hex":"#rrggbb","style":"casual|office|sport|evening|street","warmth":2,"seasons":["spring"],"similar":["id схожих речей з гардеробу"],"outfits":[{"title":"назва образу","items":["id","id"],"why":"чим цей образ цікавий"}],"verdict":"buy|maybe|skip","reason":"1-2 речення: чому саме такий висновок"}
+У outfits дай до 3 образів з речей гардеробу, які запрацюють разом з новою річчю. Усі тексти українською.`,{images:[blob],temperature:0.5});
+    const cat=CATS[r.category]?r.category:"top";
+    const known=new Set(state.items.map(i=>i.id));
+    const similar=(Array.isArray(r.similar)?r.similar:[]).filter(id=>known.has(String(id)));
+    const combos=newCombos(cat);
+    const outfits=(Array.isArray(r.outfits)?r.outfits:[]).map(o=>({title:String(o.title||"Образ"),why:String(o.why||""),
+      items:[...new Set((Array.isArray(o.items)?o.items:[]).map(String))].filter(id=>known.has(id))})).filter(o=>o.items.length);
+    const vClass={buy:"v-buy",maybe:"v-maybe",skip:"v-skip"}[r.verdict]||"v-maybe";
+    const vText={buy:"Варто купити",maybe:"Подумайте",skip:"Краще пропустити"}[r.verdict]||"Подумайте";
+    st.textContent="";
+    $("#buyResult").innerHTML=`
+      <div class="verdict ${vClass}">${vText}</div>
+      <p style="margin:0 0 10px"><b>${esc(r.name||"Річ")}</b>${price?` — ${price} грн`:""}</p>
+      <div class="factgrid">
+        <div class="fact"><b>${similar.length}</b><span>схожих речей у вас</span></div>
+        <div class="fact"><b>+${combos}</b><span>можливих комбінацій</span></div>
+        <div class="fact"><b>${outfits.length}</b><span>нових образів</span></div>
+        <div class="fact"><b>${price?Math.round(price/Math.max(1,combos)):"—"}</b><span>грн на комбінацію</span></div>
+      </div>
+      <p style="margin:0 0 12px">${esc(r.reason||"")}</p>
+      ${outfits.map(o=>lookHTML(o,{actions:""})).join("")}
+      <button class="btn primary block" data-buy-add='${esc(JSON.stringify({name:r.name,category:cat,color:r.color,hex:r.hex,style:r.style,warmth:r.warmth,seasons:r.seasons,price}))}'>Я купив — додати в гардероб</button>`;
+  }catch(err){showAIError(err,st)}
+};
+
+/* ---------- Розумна валіза ---------- */
+const packDlg=$("#packDlg");
+$("#packClose").onclick=()=>packDlg.close();
+$("#packGo").onclick=async()=>{
+  const st=$("#packStatus");st.classList.remove("err");$("#packResult").innerHTML="";
+  const city=$("#packCity").value.trim(),days=Math.max(1,Math.min(14,Number($("#packDays").value)||5));
+  if(!city){st.textContent="Впишіть місто призначення.";st.classList.add("err");return}
+  if(!getKey()){st.textContent=aiCopy({code:"no_key"});st.classList.add("err");return}
+  st.innerHTML=`<span class="spinner" aria-hidden="true"></span> Дивлюся прогноз погоди…`;
+  let f;
+  try{f=await forecast(city,days)}
+  catch(e){st.textContent=e.message==="notfound"?"Такого міста не знайшлося.":"Не вдалося отримати прогноз.";st.classList.add("err");return}
+  st.innerHTML=`<span class="spinner" aria-hidden="true"></span> Пакую валізу…`;
+  try{
+    const wx=f.days.slice(0,days).map((d,i)=>`День ${i+1} (${d.date}): ${d.min}…${d.max}°C, ${d.weather}`).join("\n");
+    const r=await AI.json(`Користувач їде в ${f.city} на ${days} днів. Склади образ на кожен день з його речей, використовуючи ЯКОМОГА МЕНШЕ різних речей: одна річ має працювати в кількох образах.
+Прогноз погоди:
+${wx}
+
+Речі (id | назва | категорія | колір | стиль | сезони | теплота | скільки разів вдягали):
+${catalogText(state.items)}
+
+Відповідай лише JSON:
+{"pack":["id речей, які треба покласти у валізу"],"days":[{"day":1,"title":"куди/що це за день","items":["id","id"]}],"note":"1-2 речення: як мало речей вийшло і яка річ працює найчастіше"}
+Усі тексти українською.`,{temperature:0.6});
+    const known=new Set(state.items.map(i=>i.id));
+    const pack=(Array.isArray(r.pack)?r.pack:[]).map(String).filter(id=>known.has(id));
+    const dayList=(Array.isArray(r.days)?r.days:[]).map(d=>({day:d.day,title:String(d.title||""),
+      items:(Array.isArray(d.items)?d.items:[]).map(String).filter(id=>known.has(id))}));
+    st.textContent="";
+    $("#packResult").innerHTML=`
+      <div class="factgrid"><div class="fact"><b>${pack.length}</b><span>речей у валізі</span></div><div class="fact"><b>${dayList.length}</b><span>готових образів</span></div></div>
+      <p style="margin:0 0 12px">${esc(r.note||"")}</p>
+      ${dayList.map((d,i)=>{
+        const w=f.days[i];
+        return `<div class="packday"><b>День ${d.day||i+1} — ${esc(d.title)}</b><span>${w?`${w.min}…${w.max}°C, ${w.weather.toLowerCase()} · `:""}${d.items.map(id=>esc(itemById(id)?.name||"")).filter(Boolean).join(" + ")}</span></div>`;
+      }).join("")}`;
+  }catch(e){showAIError(e,st)}
+};
+
+/* ---------- Примірка на мені ---------- */
+const tryDlg=$("#tryDlg");
+$("#tryClose").onclick=()=>tryDlg.close();
+async function tryOn(outfit){
+  tryDlg.showModal();
+  const st=$("#tryStatus");st.classList.remove("err");$("#tryResult").innerHTML="";
+  if(!state.userPhoto){st.innerHTML=`Спершу додайте своє фото у вкладці «Профіль».`;st.classList.add("err");return}
+  const items=(outfit.items||[]).map(itemById).filter(i=>i&&i.photo);
+  if(!items.length){st.textContent="У речей цього образу немає фото. Примірка працює лише зі сфотографованими речами.";st.classList.add("err");return}
+  if(!getKey()){st.textContent=aiCopy({code:"no_key"});st.classList.add("err");return}
+  st.innerHTML=`<span class="spinner" aria-hidden="true"></span> Приміряю образ… Це може зайняти до хвилини.`;
+  try{
+    const imgs=[dataUrlToB64(state.userPhoto),...items.slice(0,4).map(i=>dataUrlToB64(i.photo))];
+    const names=items.slice(0,4).map(i=>i.name).join(", ");
+    const url=await AI.image(`Перше зображення — фотографія людини. Наступні зображення — предмети одягу: ${names}.
+Створи реалістичне фото цієї самої людини, вдягненої в цей одяг. Збережи обличчя, зачіску, статуру й освітлення з першого фото. Фон нейтральний світлий. Поверни лише зображення.`,imgs,null);
+    $("#tryResult").innerHTML=`<div class="tryout"><img src="${esc(url)}" alt="Образ на вашому фото"></div><p class="lead">Це приблизна візуалізація від AI, а не точна примірка.</p>`;
+    st.textContent="";
+  }catch(e){showAIError(e,st)}
+}
+
+/* ---------- Ключ ---------- */
+const keyDlg=$("#keyDlg");
+$("#keyBtn").onclick=()=>{$("#keyIn").value=getKey();keyDlg.showModal()};
+$("#keyCancel").onclick=()=>keyDlg.close();
+$("#keySave").onclick=()=>{try{localStorage.setItem(KEY_LS,$("#keyIn").value.trim())}catch(e){}keyDlg.close();renderAIState();toast(getKey()?"Ключ збережено, AI увімкнено":"Ключ порожній")};
+$("#keyDel").onclick=()=>{try{localStorage.removeItem(KEY_LS)}catch(e){}keyDlg.close();renderAIState();toast("Ключ видалено")};
+
+/* ---------- Обробка кліків ---------- */
 document.addEventListener("click",async e=>{
   const t=e.target.closest("button");if(!t)return;
   const d=t.dataset;
   if(d.act==="add")openItem(null);
-  else if(d.act==="demo")loadDemo(t);
+  else if(d.act==="demo")loadDemo();
+  else if(d.act==="buy")openBuy();
+  else if(d.act==="pack"){$("#packResult").innerHTML="";$("#packStatus").textContent="";packDlg.showModal()}
+  else if(d.act==="profile")analyseStyle();
   else if(d.item)openItem(d.item);
   else if(d.filter){state.filter=d.filter;renderWardrobe()}
   else if(d.ev){state.event=d.ev;renderChoiceChips()}
   else if(d.wx){state.weather=d.wx;renderChoiceChips()}
   else if(d.goto)showTab(d.goto);
-  else if(t.id==="moreBtn")generate(true);
+  else if(d.start)startChallenge(d.start);
+  else if(d.claim){const ch=CHALLENGES.find(c=>c.id===d.claim);if(ch)claimChallenge(ch)}
+  else if(d.revive){showTab("outfit");generate({forceItem:d.revive})}
+  else if(t.id==="moreBtn")generate({fresh:true});
   else if(d.save!=null){
     const o=state.results?.outfits[Number(d.save)];if(!o||o.saved)return;
     const r=state.results;
-    if(await safe(Store.put("outfits",{id:newId(),title:o.title,items:o.items,why:o.why,tip:o.tip,event:r.event,temp:r.temp,weather:r.weather,createdAt:Date.now()}))){
-      o.saved=true;t.textContent="Збережено ✓";toast("Образ збережено");
-    }
+    state.outfits.push({id:newId(),title:o.title,items:o.items,why:o.why,tip:o.tip,event:r.event,temp:r.temp,weather:r.weather,city:r.city,createdAt:Date.now()});
+    if(persist()){o.saved=true;t.textContent="Збережено ✓";addPoints(10,"Образ збережено.");persist()}
   }
   else if(d.wearRes!=null){const o=state.results?.outfits[Number(d.wearRes)];if(o)wear(o.items)}
   else if(d.wearSaved){const o=state.outfits.find(x=>x.id===d.wearSaved);if(o)wear(o.items)}
-  else if(d.delOutfit){if(confirm("Видалити цей образ?")&&await safe(Store.del("outfits",d.delOutfit),"Не вдалося видалити."))toast("Образ видалено")}
+  else if(d.tryRes!=null){const o=state.results?.outfits[Number(d.tryRes)];if(o)tryOn(o)}
+  else if(d.trySaved){const o=state.outfits.find(x=>x.id===d.trySaved);if(o)tryOn(o)}
+  else if(d.delOutfit){
+    if(!confirm("Видалити цей образ?"))return;
+    state.outfits=state.outfits.filter(x=>x.id!==d.delOutfit);persist();toast("Образ видалено");
+  }
+  else if(d.buyAdd){
+    let r;try{r=JSON.parse(d.buyAdd)}catch(err){return}
+    buyDlg.close();openItem(null);
+    fillForm({...r,seasons:Array.isArray(r.seasons)?r.seasons.filter(s=>SEASONS[s]):[]});
+    $("#fPrice").value=r.price||"";
+  }
+});
+document.addEventListener("change",async e=>{
+  if(e.target.id!=="meIn")return;
+  const file=e.target.files?.[0];if(!file)return;
+  try{
+    const img=await loadImage(file);
+    state.userPhoto=toCanvas(img,700).toDataURL("image/jpeg",0.8);
+    persist();toast("Фото збережено");
+  }catch(err){toast("Це фото не вдалося відкрити.")}
 });
 
-/* ---------- AI: Anthropic Messages API ---------- */
-const MODEL_FAST="claude-haiku-4-5-20251001"; // швидка модель для розпізнавання фото
-const MODEL_SMART="claude-sonnet-5";          // розумніша модель для підбору образів
-const KEY_LS="obraz-ai-key";
-const getKey=()=>{try{return localStorage.getItem(KEY_LS)||""}catch(e){return ""}};
-const blobToB64=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(",")[1]);r.onerror=rej;r.readAsDataURL(b)});
-function parseJSON(text){
-  const t=text.replace(/```json|```/g,"").trim();
-  try{return JSON.parse(t)}catch(e){}
-  const a=Math.min(...["{","["].map(c=>t.indexOf(c)).filter(i=>i>=0));
-  const b=Math.max(t.lastIndexOf("}"),t.lastIndexOf("]"));
-  if(isFinite(a)&&b>a){try{return JSON.parse(t.slice(a,b+1))}catch(e){}}
-  throw {code:"invalid_json"};
-}
-const AI={
-  async json(prompt,opts={}){
-    const key=getKey();if(!key)throw {code:"no_key"};
-    const content=[];
-    for(const b of [].concat(opts.images||[]))content.push({type:"image",source:{type:"base64",media_type:"image/jpeg",data:await blobToB64(b)}});
-    content.push({type:"text",text:prompt+"\nВідповідай лише чистим JSON, без пояснень і без Markdown."});
-    let res;
-    try{
-      res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",signal:opts.signal,
-        headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
-        body:JSON.stringify({model:opts.modelTier==="quick"?MODEL_FAST:MODEL_SMART,max_tokens:2000,messages:[{role:"user",content}]})});
-    }catch(e){throw {code:e?.name==="AbortError"?"cancelled":"upstream_error"}}
-    if(!res.ok){
-      const err=await res.json().catch(()=>null);console.warn("API error",res.status,err);
-      throw {code:res.status===401||res.status===403?"bad_key":res.status===429?"rate_limited":res.status===400?"bad_request":"upstream_error",detail:err?.error?.message};
-    }
-    const data=await res.json();
-    return parseJSON((data.content||[]).filter(c=>c.type==="text").map(c=>c.text).join(""));
-  }
-};
-function initAI(){state.sample=getKey()?AI:null;state.canImages=true;state.aiOff=false;renderAIState()}
-const keyDlg=$("#keyDlg");
-$("#keyBtn").onclick=()=>{$("#keyIn").value=getKey();keyDlg.showModal()};
-$("#keyCancel").onclick=()=>keyDlg.close();
-$("#keySave").onclick=()=>{try{localStorage.setItem(KEY_LS,$("#keyIn").value.trim())}catch(e){}keyDlg.close();initAI();toast(getKey()?"Ключ збережено, AI увімкнено":"Ключ порожній")};
-$("#keyDel").onclick=()=>{try{localStorage.removeItem(KEY_LS)}catch(e){}keyDlg.close();initAI();toast("Ключ видалено")};
-
-/* ---------- Start ---------- */
-Store.loadLocal();
-renderChoiceChips();renderWardrobe();renderSaved();
-initAI();
+/* ---------- Старт ---------- */
+Store.load();
+renderChoiceChips();
+$("#city").value=state.city;
+renderAll();
+renderAIState();
 </script>
 </body>
 </html>
