@@ -26,17 +26,35 @@ const CHALLENGES=[
 
 /* ---------- Анкета стилю та стать ---------- */
 const GENDERS=[["female","Жінка","👩"],["male","Чоловік","👨"],["other","Інше / не вказую","🙂"]];
+// Кожен варіант: [значення, підпис, емодзі, фон плитки].
+// max:"styles" — скільки варіантів можна обрати, залежить від тарифу (див. PLAN).
 const QUIZ=[
-  {id:"vibe",q:"Який образ вам ближчий?",lead:"Це задасть загальний тон рекомендацій.",multi:false,
-   opts:[["min","Мінімалізм","🤍"],["classic","Класика","🧥"],["street","Стрітстайл","🧢"],["romantic","Романтичний","🌸"],["sport","Спортивний","👟"]]},
+  {id:"vibe",q:"Які стилі вам до душі?",lead:"Це задасть загальний тон рекомендацій.",multi:true,max:"styles",
+   opts:[["min","Мінімалізм","🤍","linear-gradient(135deg,#f5f4f0 0 58%,#d8d3ca 58%)"],
+         ["classic","Класика","🧥","linear-gradient(135deg,#2b3040 0 52%,#c8ad7f 52%)"],
+         ["street","Стрітстайл","🧢","linear-gradient(135deg,#222 0 45%,#f4c542 45% 58%,#8a8a8a 58%)"],
+         ["romantic","Романтичний","🌸","radial-gradient(circle at 30% 35%,#f4b6cc 0 22%,transparent 23%),radial-gradient(circle at 72% 62%,#fbd9e6 0 20%,transparent 21%),#fff3f7"],
+         ["sport","Спортивний","👟","linear-gradient(90deg,#f6f6f6 0 30%,#1f5e5b 30% 40%,#f6f6f6 40% 60%,#1f5e5b 60% 70%,#f6f6f6 70%)"],
+         ["boho","Бохо","🪶","linear-gradient(135deg,#c98b5b 0 34%,#e9d3b0 34% 66%,#7d8b5a 66%)"]]},
   {id:"colors",q:"Які кольори носите найчастіше?",lead:"Можна обрати кілька.",multi:true,
-   opts:[["neutral","Нейтральні: білий, сірий, бежевий","🤍"],["dark","Темні: чорний, графіт","🖤"],["bright","Яскраві акценти","🌈"],["pastel","Пастельні","🩵"],["earth","Земляні: хакі, коричневий","🤎"]]},
+   opts:[["neutral","Нейтральні","🤍","linear-gradient(90deg,#fff 0 33%,#cfcac1 33% 66%,#e8dccb 66%)"],
+         ["dark","Темні","🖤","linear-gradient(90deg,#111 0 33%,#3a3a40 33% 66%,#1c2331 66%)"],
+         ["bright","Яскраві","🌈","linear-gradient(90deg,#e63946 0 25%,#ffb703 25% 50%,#2a9d8f 50% 75%,#3a86ff 75%)"],
+         ["pastel","Пастельні","🩵","linear-gradient(90deg,#cfe8ff 0 33%,#ffd6e7 33% 66%,#e2f0cb 66%)"],
+         ["earth","Земляні","🤎","linear-gradient(90deg,#6b705c 0 33%,#a5a58d 33% 66%,#7f5539 66%)"]]},
+  {id:"pattern",q:"Одноколірне чи з візерунком?",lead:"Можна обрати кілька — наприклад, базу й акценти.",multi:true,
+   opts:[["solid","Одноколірне","⬜","#8aa1b1"],
+         ["stripe","Смужка","〰️","repeating-linear-gradient(90deg,#fff 0 10px,#1c2331 10px 16px)"],
+         ["check","Клітинка","🔲","repeating-linear-gradient(0deg,rgba(170,40,40,.55) 0 8px,transparent 8px 16px),repeating-linear-gradient(90deg,rgba(170,40,40,.55) 0 8px,transparent 8px 16px),#f3e9dc"],
+         ["floral","Квіти","🌼","radial-gradient(circle,#f28ab2 0 4px,transparent 5px) 0 0/22px 22px,radial-gradient(circle,#9bd18b 0 3px,transparent 4px) 11px 11px/22px 22px,#fff6f0"],
+         ["dots","Горошок","⚫","radial-gradient(circle,#1c2331 0 3px,transparent 4px) 0 0/16px 16px,#fff"],
+         ["print","Принт і графіка","🐆","radial-gradient(ellipse at 30% 40%,#3b2a1a 0 5px,transparent 6px) 0 0/24px 18px,#d9a55b"]]},
   {id:"comfort",q:"Комфорт чи вигляд?",lead:"Чесна відповідь зробить поради реалістичними.",multi:false,
-   opts:[["comfort","Комфорт понад усе","🛋️"],["balance","Шукаю баланс","⚖️"],["look","Вигляд важливіший","✨"]]},
+   opts:[["comfort","Комфорт понад усе","🛋️","#dfe9e4"],["balance","Шукаю баланс","⚖️","#ece6d8"],["look","Вигляд важливіший","✨","#efe0ea"]]},
   {id:"experiment",q:"Любите експерименти в одязі?",lead:"Від цього залежить, наскільки сміливі будуть образи.",multi:false,
-   opts:[["no","Ні, тримаюся базового","🧱"],["some","Іноді","🙂"],["yes","Так, люблю сміливі рішення","🎨"]]},
+   opts:[["no","Ні, тримаюся базового","🧱","#e4e2de"],["some","Іноді","🙂","#e8eddb"],["yes","Так, люблю сміливі рішення","🎨","#f3dfd2"]]},
   {id:"pain",q:"Що вас найбільше дратує?",lead:"Можна обрати кілька — застосунок на цьому сфокусується.",multi:true,
-   opts:[["nothing","«Повна шафа, а вдягнути нічого»","😩"],["waste","Купую зайве","🛍️"],["time","Довго збираюся вранці","⏰"],["match","Не знаю, що з чим поєднується","🤔"]]}
+   opts:[["nothing","«Повна шафа, а вдягнути нічого»","😩","#e9e4f1"],["waste","Купую зайве","🛍️","#f1e6dc"],["time","Довго збираюся вранці","⏰","#dfe8f0"],["match","Не знаю, що з чим поєднується","🤔","#e7eee2"]]}
 ];
 const QUIZ_LABEL={};QUIZ.forEach(q=>q.opts.forEach(([v,l])=>QUIZ_LABEL[q.id+":"+v]=l));
 
@@ -44,9 +62,9 @@ const QUIZ_LABEL={};QUIZ.forEach(q=>q.opts.forEach(([v,l])=>QUIZ_LABEL[q.id+":"+
 // Застосунок сам питає у Google список доступних моделей і бере першу з цього списку переваг.
 // Якщо хочете конкретну модель — поставте її назву першою.
 const MODEL_PREFS={
-  fast:["gemini-3.5-flash-lite","gemini-3.1-flash-lite","gemini-2.5-flash-lite","gemini-3.5-flash","gemini-2.5-flash"],
-  smart:["gemini-3.5-flash","gemini-3.7-flash","gemini-3.8-flash","gemini-2.5-flash","gemini-2.5-pro","gemini-3.5-flash-lite"],
-  image:["gemini-3.1-flash-image","gemini-2.5-flash-image","gemini-3-pro-image","gemini-3.1-flash-lite-image"]
+  fast:["gemini-3.5-flash-lite","gemini-3.6-flash-lite","gemini-3.1-flash-lite","gemini-3.6-flash","gemini-3.5-flash"],
+  smart:["gemini-3.6-flash","gemini-3.5-flash","gemini-3.7-flash","gemini-3.8-flash","gemini-3.5-flash-lite"],
+  image:["gemini-3.1-flash-image","gemini-3-pro-image","gemini-3.1-flash-lite-image","gemini-2.5-flash-image"]
 };
 const MODELS={fast:null,smart:null,image:null,list:[],loaded:false};
 const BAD_MODEL=/live|tts|transcribe|embedding|embed|aqa|veo|imagen|learnlm|gemma|audio/i;
@@ -82,3 +100,15 @@ const SHOPS=[
   {name:"Всі. Свої", site:"vsisvoi.ua"},
   {name:"LOVE&LIVE", site:"loveandlive.ua"}
 ];
+
+/* ---------- Тарифи ---------- */
+// Оплата в прототипі не підключена: Premium вмикається демо-кнопкою.
+const PLAN={
+  price:149,            // грн на місяць
+  freeItems:30,         // скільки речей можна зберегти безкоштовно
+  freeStyles:1,         // скільки стилів можна обрати в анкеті безкоштовно
+  premiumStyles:3,
+  // функції лише для Premium. «Що докупити» навмисно безкоштовне:
+  // на ньому застосунок заробляє комісію з покупок.
+  premiumOnly:{buy:"«Купувати чи ні?» з фото з магазину",tryon:"Примірка образів на вашому фото",pack:"Розумна валіза для поїздок"}
+};

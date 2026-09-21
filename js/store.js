@@ -6,7 +6,7 @@
 
 /* ---------- Стан застосунку ---------- */
 const state={
-  items:[],outfits:[],wearLog:[],profile:null,points:0,challenges:{},city:"",userPhoto:null,user:null,
+  items:[],outfits:[],wearLog:[],profile:null,points:0,challenges:{},city:"",userPhoto:null,user:null,premium:false,
   filter:"all",event:"Навчання",weather:"Хмарно",results:null,editing:null,draftPhoto:null,buyBlob:null,ctl:null,
   ai:null,aiBusy:false
 };
@@ -38,12 +38,13 @@ const Store={
       state.city=d.city||"";
       state.userPhoto=d.userPhoto||null;
       state.user=d.user||null;
+      state.premium=!!d.premium;
     }catch(e){console.warn("Не вдалося прочитати сховище",e)}
   },
   save(){
     try{
       localStorage.setItem(LS_KEY,JSON.stringify({items:state.items,outfits:state.outfits,wearLog:state.wearLog,
-        challenges:state.challenges,profile:state.profile,points:state.points,city:state.city,userPhoto:state.userPhoto,user:state.user}));
+        challenges:state.challenges,profile:state.profile,points:state.points,city:state.city,userPhoto:state.userPhoto,user:state.user,premium:state.premium}));
       return true;
     }catch(e){toast("Сховище браузера переповнене. Видаліть кілька фото або речей.");return false}
   }
@@ -90,3 +91,6 @@ function loadDemo(){
   Store.update();toast("Приклад гардеробу завантажено");
 }
 
+
+/* ---------- Тариф ---------- */
+function setPremium(on){Store.update(st=>{st.premium=!!on})}

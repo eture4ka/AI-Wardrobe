@@ -94,3 +94,18 @@ function shopSearchUrl(query,site,maxPrice){
   if(cap)url+="&tbs="+encodeURIComponent("mr:1,price:1,ppr_max:"+cap);
   return url;
 }
+
+/* ---------- Ініціали для аватара без фото ---------- */
+function initials(name){
+  const parts=String(name||"").trim().split(/\s+/).filter(Boolean);
+  if(!parts.length)return "🙂";
+  return (parts[0][0]+(parts[1]?parts[1][0]:"")).toUpperCase();
+}
+
+/* ---------- Тариф: що дозволено ---------- */
+const isPremium=()=>!!state.premium;
+const canUse=feature=>isPremium()||!PLAN.premiumOnly[feature];
+const itemLimit=()=>isPremium()?Infinity:PLAN.freeItems;
+const styleLimit=()=>isPremium()?PLAN.premiumStyles:PLAN.freeStyles;
+/** Відповідь на питання анкети завжди як масив — навіть якщо колись збереглася рядком. */
+const asList=v=>Array.isArray(v)?v:(v?[v]:[]);

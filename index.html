@@ -18,6 +18,7 @@
     <div class="barside">
       <div class="ai-state" id="aiState">Підключаю AI…</div>
       <button class="btn ghost" id="keyBtn" aria-label="API-ключ">🔑</button>
+      <button class="avatar-btn" id="meAvatar" hidden aria-label="Профіль"></button>
     </div>
   </header>
 
@@ -160,6 +161,19 @@
     <div class="status" id="shopStatus" role="status" aria-live="polite"></div>
     <div id="shopResult"></div>
     <div class="dlg-actions"><button class="btn" id="shopClose" style="margin-left:auto">Закрити</button></div>
+  </div>
+</dialog>
+
+<dialog id="payDlg" aria-labelledby="payTitle">
+  <div class="dlg">
+    <div class="pay-top"><span class="pro big">Premium</span></div>
+    <h2 id="payTitle">SmartWardrobe Premium</h2>
+    <p class="lead" id="payReason"></p>
+    <ul class="perks" id="payPerks"></ul>
+    <div class="pay-price"><b id="payPrice"></b> грн / місяць</div>
+    <button class="btn tape block" id="payTry">Спробувати Premium (демо)</button>
+    <p class="privacy">Це демонстрація: оплата не підключена, платіжні дані не потрібні. У робочій версії тут буде оплата через платіжний сервіс.</p>
+    <div class="dlg-actions"><button class="btn" id="payClose" style="margin-left:auto">Не зараз</button></div>
   </div>
 </dialog>
 

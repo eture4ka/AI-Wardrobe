@@ -16,10 +16,23 @@ function setPreview(boxSel,hintSel,src){
   if(src){const im=document.createElement("img");im.src=src;im.alt="Фото";box.appendChild(im)}
 }
 
+let retryTimer=null;
 function showAIError(e,el){
+  clearInterval(retryTimer);
   if(e?.code==="cancelled"){el.textContent="Зупинено.";el.classList.remove("err");return}
+  if(e?.code==="rate_limited"&&e.retryAfter&&!e.daily){
+    // зворотний відлік замість сирого тексту від Google
+    let left=e.retryAfter;
+    const paint=()=>{el.textContent=left>0?`Безкоштовний ключ дозволяє кілька запитів на хвилину, і їх вичерпано. Можна повторити через ${left} с.`:"Можна пробувати знову.";el.classList.toggle("err",left>0)};
+    paint();retryTimer=setInterval(()=>{left--;paint();if(left<=0)clearInterval(retryTimer)},1000);
+    return;
+  }
   if(e?.code==="bad_key"||e?.code==="no_key")renderAIState();
   el.textContent=aiCopy(e);el.classList.add("err");
+  // технічна деталь: код відповіді, модель і текст від Google (або текст помилки JavaScript)
+  const tech=[e?.status&&`код ${e.status}`,e?.model,e?.detail||(!e?.code&&e?.message)].filter(Boolean).join(" · ");
+  if(tech){const d=document.createElement("div");d.className="tech";d.textContent=tech;el.appendChild(d)}
+  if(!e?.code)console.error("Неочікувана помилка",e);
 }
 function renderAIState(){
   const on=!!getKey();
@@ -49,13 +62,13 @@ function renderWardrobe(){
   const totalWears=state.items.reduce((s,i)=>s+(i.wearCount||0),0);
   box.innerHTML=`
     <div class="stats">
-      <div class="stat"><b>${state.items.length}</b><span>речей</span></div>
+      <div class="stat"><b>${state.items.length}${isPremium()?"":`<small style="font-size:.6em;opacity:.6"> / ${PLAN.freeItems}</small>`}</b><span>речей</span></div>
       <div class="stat"><b>${forgottenItems().length}</b><span>давно без діла</span></div>
       <div class="stat"><b>${totalWears}</b><span>носінь</span></div>
     </div>
     <div class="row" style="margin-bottom:14px">
       <button class="btn primary" data-act="add" style="flex:1">＋ Додати річ</button>
-      <button class="btn tape" data-act="buy" style="flex:1">🛍️ Купувати?</button>
+      <button class="btn tape" data-act="buy" style="flex:1">🛍️ Купувати?${canUse("buy")?"":`<span class="pro">Premium</span>`}</button>
     </div>
     <div class="chips" role="group" aria-label="Фільтр за категорією">
       <button class="chip" data-filter="all" aria-pressed="${state.filter==="all"}">Усе</button>
@@ -82,7 +95,7 @@ function renderResults(fresh){
     r.outfits.map((o,i)=>lookHTML(o,{fresh,meta:label,
       actions:`<button class="btn tape sm" data-save="${i}">${o.saved?"Збережено ✓":"Зберегти"}</button>
                <button class="btn sm" data-wear-res="${i}">Вдягну сьогодні</button>
-               <button class="btn sm" data-try-res="${i}">Приміряти</button>`})).join("")+
+               <button class="btn sm" data-try-res="${i}">Приміряти${canUse("tryon")?"":`<span class="pro">Premium</span>`}</button>`})).join("")+
     `<button class="btn block" id="moreBtn">Інші варіанти</button>`;
 }
 function renderSaved(){
@@ -91,7 +104,7 @@ function renderSaved(){
   if(!list.length){box.innerHTML=`<div class="empty"><p>Тут з'являться образи, які ви збережете після підбору.</p><button class="btn primary" data-goto="outfit">Підібрати образ</button></div>`;return}
   box.innerHTML=list.map(o=>lookHTML(o,{meta:[o.city,o.event,o.temp!=null?tempLabel(o.temp):"",o.weather].filter(Boolean).join(", "),
     actions:`<button class="btn tape sm" data-wear-saved="${esc(o.id)}">Вдягну сьогодні</button>
-             <button class="btn sm" data-try-saved="${esc(o.id)}">Приміряти</button>
+             <button class="btn sm" data-try-saved="${esc(o.id)}">Приміряти${canUse("tryon")?"":`<span class="pro">Premium</span>`}</button>
              <button class="btn ghost danger sm" data-del-outfit="${esc(o.id)}">Видалити</button>`})).join("");
 }
 function renderMe(){
@@ -108,6 +121,16 @@ function renderMe(){
   }).join("");
   $("#meBody").innerHTML=`
     <div class="card">
+      <div class="me-head">
+        ${avatarHTML(u,72)}
+        <div>
+          <b class="me-name">${esc(u.name||"Без імені")}</b>
+          <div class="row" style="margin-top:8px">
+            <label class="btn sm" style="cursor:pointer">${u.avatar?"Змінити аватар":"Додати аватар"}<input type="file" accept="image/*" id="avatarIn" hidden></label>
+            ${u.avatar?`<button class="btn ghost danger sm" data-act="avatar-del">Прибрати</button>`:""}
+          </div>
+        </div>
+      </div>
       <h3>Акаунт</h3>
       <div class="summary">
         <div><span>Ім'я</span><b>${esc(u.name||"—")}</b></div>
@@ -120,6 +143,16 @@ function renderMe(){
       ${quizTxt?`<h3 style="margin-top:14px">Анкета стилю</h3><div class="summary">${quizTxt}</div>`:""}
       <div class="row"><button class="btn" data-act="edit-profile" style="flex:1">Редагувати анкету</button>
       <button class="btn ghost danger" data-act="reset">Скинути все</button></div>
+    </div>
+
+    <div class="plan ${isPremium()?"on":""}">
+      <h3>${isPremium()?"У вас Premium ✨":"Безкоштовний тариф"}</h3>
+      ${isPremium()
+        ?`<p style="margin:0 0 12px;font-size:.92rem">Безлімітний гардероб, до ${PLAN.premiumStyles} стилів в анкеті та всі функції відкриті.</p>
+          <button class="btn sm" data-act="plan-off">Повернутися на безкоштовний (демо)</button>`
+        :`<p class="lead" style="margin:0 0 10px">До ${PLAN.freeItems} речей і ${PLAN.freeStyles} стиль в анкеті. Premium відкриває більше:</p>
+          <ul class="perks">${premiumPerks()}</ul>
+          <button class="btn tape block" data-act="paywall">Premium за ${PLAN.price} грн / міс</button>`}
     </div>
 
     <div class="level">
@@ -172,7 +205,7 @@ function renderMe(){
     <div class="card">
       <h3>Розумна валіза</h3>
       <p class="lead" style="margin:0 0 10px">Поїздка на кілька днів? AI складе образи за прогнозом погоди й мінімумом речей.</p>
-      <button class="btn block" data-act="pack">Спакувати валізу</button>
+      <button class="btn block" data-act="pack">Спакувати валізу${canUse("pack")?"":`<span class="pro">Premium</span>`}</button>
     </div>
 
     <div class="card">
@@ -185,7 +218,27 @@ function renderMe(){
 
 
 /* ---------- Перемальовування після зміни стану ---------- */
-function renderAll(){renderWardrobe();renderSaved();renderMe()}
+/* ---------- Аватар ---------- */
+/** Кругла аватарка: фото, якщо є, інакше ініціали. */
+function avatarHTML(u,size){
+  const s=size||44;
+  const inner=u&&u.avatar?`<img src="${esc(u.avatar)}" alt="">`:`<span>${esc(initials(u&&u.name))}</span>`;
+  return `<span class="avatar" style="width:${s}px;height:${s}px;font-size:${Math.round(s*0.38)}px">${inner}</span>`;
+}
+/** Перелік переваг Premium — з конфігурації, щоб не дублювати тексти. */
+function premiumPerks(){
+  return [`Безлімітний гардероб замість ${PLAN.freeItems} речей`,`До ${PLAN.premiumStyles} стилів в анкеті замість ${PLAN.freeStyles}`,...Object.values(PLAN.premiumOnly)]
+    .map(t=>`<li>${esc(t)}</li>`).join("");
+}
+function renderHeaderAvatar(){
+  const b=$("#meAvatar");if(!b)return;
+  const u=state.user;
+  b.hidden=!(u&&u.done);
+  b.innerHTML=avatarHTML(u,34).replace('class="avatar"',isPremium()?'class="avatar ring"':'class="avatar"');
+  b.setAttribute("aria-label",u&&u.name?`Профіль: ${u.name}`:"Профіль");
+}
+
+function renderAll(){renderWardrobe();renderSaved();renderMe();renderHeaderAvatar()}
 
 /* ---------- Кнопки вибору події та погоди ---------- */
 function renderChoiceChips(){
@@ -206,6 +259,13 @@ document.querySelectorAll("[role=tab]").forEach(b=>b.onclick=()=>showTab(b.datas
 async function loadImage(file){
   try{return await createImageBitmap(file,{imageOrientation:"from-image"})}
   catch(e){return await new Promise((res,rej)=>{const u=URL.createObjectURL(file);const im=new Image();im.onload=()=>res(im);im.onerror=()=>rej(e);im.src=u})}
+}
+/** Обрізає фото до квадрата по центру — для аватара. */
+function toSquare(img,size){
+  const side=Math.min(img.width,img.height);
+  const c=document.createElement("canvas");c.width=size;c.height=size;
+  c.getContext("2d").drawImage(img,(img.width-side)/2,(img.height-side)/2,side,side,0,0,size,size);
+  return c;
 }
 function toCanvas(img,max){
   const w=img.width,h=img.height,s=Math.min(1,max/Math.max(w,h));

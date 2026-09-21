@@ -18,6 +18,8 @@ function fillForm(it){
   $("#fWarm").value=w;$("#fWarmOut").textContent=w;
 }
 function openItem(id){
+  if(!id&&state.items.length>=itemLimit())
+    return openPaywall(`Безкоштовно можна зберегти до ${PLAN.freeItems} речей. У Premium гардероб безлімітний.`);
   const it=id?itemById(id):null;
   state.editing=it;state.draftPhoto=it?.photo||null;
   $("#dlgTitle").textContent=it?"Редагувати річ":"Нова річ";
@@ -38,6 +40,7 @@ $("#saveItem").onclick=()=>{
     price:Number($("#fPrice").value)||0,seasons:[...document.querySelectorAll("#fSeasons input:checked")].map(c=>c.value),
     warmth:Number($("#fWarm").value),photo:state.draftPhoto||null};
   const isNew=!state.editing;
+  if(isNew&&state.items.length>=itemLimit()){itemDlg.close();return openPaywall(`Безкоштовно можна зберегти до ${PLAN.freeItems} речей.`)}
   const i=state.items.findIndex(x=>x.id===it.id);
   if(i>=0)state.items[i]=it;else state.items.push(it);
   if(!Store.update()){if(i<0)state.items.pop();return}
@@ -114,6 +117,10 @@ function obRender(){
   else if(key==="account"){
     body.innerHTML=`<h2>Створення акаунта</h2>
       <p class="lead">Щоб зберігати ваш гардероб і прогрес.</p>
+      <div class="ob-avatar">
+        ${avatarHTML(u,64)}
+        <label class="btn sm" style="cursor:pointer">${u.avatar?"Змінити аватар":"Додати аватар"}<input type="file" accept="image/*" id="obAvatarIn" hidden></label>
+      </div>
       <label class="fl"><span>Ім'я *</span><input type="text" id="uName" maxlength="40" value="${esc(u.name)}" placeholder="Марія"></label>
       <label class="fl"><span>Email *</span><input type="text" id="uEmail" maxlength="60" value="${esc(u.email)}" placeholder="maria@example.com" inputmode="email"></label>
       <label class="fl"><span>Номер телефону</span><input type="text" id="uPhone" maxlength="20" value="${esc(u.phone)}" placeholder="+380 __ ___ __ __" inputmode="tel"></label>
@@ -138,10 +145,17 @@ function obRender(){
   }
   else if(key.startsWith("quiz:")){
     const q=QUIZ.find(x=>x.id===key.slice(5));
-    const cur=u.quiz[q.id];
-    const on=v=>q.multi?(Array.isArray(cur)&&cur.includes(v)):cur===v;
+    const cur=asList(u.quiz[q.id]);
+    const limit=q.max==="styles"?styleLimit():0;
+    // плитки з фоном — для питань, де вибір візуальний; довгі підписи — у широкі плитки
+    const wide=q.opts.some(o=>o[1].length>22);
     body.innerHTML=`<h2>${esc(q.q)}</h2><p class="lead">${esc(q.lead)}</p>
-      <div class="opts">${q.opts.map(([v,l,e])=>`<button class="opt" data-quiz="${q.id}" data-val="${v}" aria-pressed="${on(v)}"><em>${e}</em>${esc(l)}</button>`).join("")}</div>`;
+      <div class="tiles ${wide?"wide":""}">${q.opts.map(([v,l,e,sw])=>`
+        <button class="tile" style="--sw:${sw||"var(--surface)"}" data-quiz="${q.id}" data-val="${v}" aria-pressed="${cur.includes(v)}">
+          <span class="tick" aria-hidden="true">✓</span>
+          <span class="tl"><em aria-hidden="true">${e}</em>${esc(l)}</span>
+        </button>`).join("")}</div>
+      ${limit?`<p class="limit-note">Обрано ${cur.length} з ${limit}.${isPremium()?"":` У Premium — до ${PLAN.premiumStyles} стилів. <button class="btn ghost sm" data-act="paywall">Спробувати</button>`}</p>`:""}`;
   }
   else if(key==="photo"){
     body.innerHTML=`<h2>Фото для примірки</h2>
@@ -210,8 +224,13 @@ obEl.addEventListener("click",e=>{
   else if(b.dataset.quiz){
     const q=QUIZ.find(x=>x.id===b.dataset.quiz),v=b.dataset.val,u=state.user;
     if(q.multi){
-      const cur=Array.isArray(u.quiz[q.id])?u.quiz[q.id]:[];
-      u.quiz[q.id]=cur.includes(v)?cur.filter(x=>x!==v):[...cur,v];
+      const cur=asList(u.quiz[q.id]);
+      const limit=q.max==="styles"?styleLimit():Infinity;
+      if(cur.includes(v))u.quiz[q.id]=cur.filter(x=>x!==v);
+      else if(cur.length<limit)u.quiz[q.id]=[...cur,v];
+      else if(limit===1)u.quiz[q.id]=[v];      // один стиль — просто замінюємо вибір
+      else{toast(`Можна обрати до ${limit} стилів`);return}
+      if(limit===1&&!isPremium()&&cur.length&&!cur.includes(v))toast(`У Premium можна обрати до ${PLAN.premiumStyles} стилів`);
     }else u.quiz[q.id]=v;
     obRender();
   }
@@ -256,7 +275,9 @@ async function generate(opts={}){
   });
   state.ctl?.abort();state.ctl=new AbortController();
   $("#genBtn").disabled=true;$("#stopBtn").hidden=false;
-  st.innerHTML=`<span class="spinner" aria-hidden="true"></span> Стиліст переглядає ваш гардероб…`;
+  const started=Date.now();
+  const tick=()=>{st.innerHTML=`<span class="spinner" aria-hidden="true"></span> Стиліст переглядає ваш гардероб… ${Math.round((Date.now()-started)/1000)} с`};
+  tick();const ticker=setInterval(tick,1000);
   try{
     const r=await AI.json(prompt,{signal:state.ctl.signal,temperature:opts.fresh?1:0.7});
     const known=new Set(state.items.map(i=>i.id));
@@ -268,7 +289,7 @@ async function generate(opts={}){
     state.results={outfits,missing:String(r.missing||""),event:state.event,temp,weather:state.weather,city:state.city};
     st.textContent="";renderResults(true);
   }catch(e){showAIError(e,st)}
-  finally{$("#genBtn").disabled=!getKey();$("#stopBtn").hidden=true}
+  finally{clearInterval(ticker);$("#genBtn").disabled=!getKey();$("#stopBtn").hidden=true}
 }
 $("#genBtn").onclick=()=>generate();
 $("#stopBtn").onclick=()=>state.ctl?.abort();
@@ -292,6 +313,7 @@ async function analyseStyle(){
 /* ---------- Купувати чи ні ---------- */
 const buyDlg=$("#buyDlg");
 function openBuy(){
+  if(!canUse("buy"))return openPaywall("«Купувати чи ні?» — функція Premium: сфотографуйте річ у магазині, і AI порівняє її з вашим гардеробом.");
   state.buyBlob=null;
   $("#buyIn").value="";$("#buyPrice").value="";$("#buyResult").innerHTML="";
   $("#buyStatus").textContent="";$("#buyStatus").classList.remove("err");
@@ -401,6 +423,7 @@ $("#packGo").onclick=async()=>{
 const tryDlg=$("#tryDlg");
 $("#tryClose").onclick=()=>tryDlg.close();
 async function tryOn(outfit){
+  if(!canUse("tryon"))return openPaywall("Примірка образів на вашому фото доступна в Premium.");
   tryDlg.showModal();
   const st=$("#tryStatus");st.classList.remove("err");$("#tryResult").innerHTML="";
   if(!state.userPhoto){st.innerHTML=`Спершу додайте своє фото у вкладці «Профіль».`;st.classList.add("err");return}
@@ -471,6 +494,21 @@ $("#shopGo").onclick=async()=>{
   finally{$("#shopGo").disabled=false}
 };
 
+/* ---------- Premium ---------- */
+const payDlg=$("#payDlg");
+function openPaywall(reason){
+  $("#payReason").textContent=reason||"Більше місця для гардеробу, кілька стилів і функції, які економлять гроші на покупках.";
+  $("#payPerks").innerHTML=premiumPerks();
+  $("#payPrice").textContent=PLAN.price;
+  payDlg.showModal();
+}
+$("#payClose").onclick=()=>payDlg.close();
+$("#payTry").onclick=()=>{
+  setPremium(true);payDlg.close();
+  toast("Premium увімкнено (демо) ✨");
+  if(!obEl.hidden)obRender();   // якщо відкрито з анкети — одразу зняти обмеження стилів
+};
+
 /* ---------- Ключ ---------- */
 const keyDlg=$("#keyDlg");
 async function showModels(){
@@ -503,9 +541,14 @@ document.addEventListener("click",async e=>{
   else if(d.act==="demo")loadDemo();
   else if(d.act==="buy")openBuy();
   else if(d.act==="shop")openShop();
+  else if(d.act==="paywall")openPaywall("");
+  else if(d.act==="plan-off"){setPremium(false);toast("Ви на безкоштовному тарифі")}
+  else if(d.act==="pack"&&!canUse("pack"))openPaywall("Розумна валіза доступна в Premium.");
   else if(d.act==="pack"){$("#packResult").innerHTML="";$("#packStatus").textContent="";packDlg.showModal()}
   else if(d.act==="profile")analyseStyle();
   else if(d.act==="edit-profile")startOnboarding(true);
+  else if(d.act==="avatar-del"){if(state.user){delete state.user.avatar;Store.update();toast("Аватар прибрано")}}
+  else if(t.id==="meAvatar")showTab("me");
   else if(d.act==="reset"){
     if(!confirm("Видалити акаунт, гардероб і всі образи? Дію не можна скасувати."))return;
     try{localStorage.removeItem(LS_KEY)}catch(e){}
@@ -541,6 +584,21 @@ document.addEventListener("click",async e=>{
     $("#fPrice").value=r.price||"";
   }
 });
+/* ---------- Аватар ---------- */
+document.addEventListener("change",async e=>{
+  if(e.target.id!=="avatarIn"&&e.target.id!=="obAvatarIn")return;
+  const file=e.target.files?.[0];if(!file)return;
+  let img;
+  try{img=await loadImage(file)}catch(err){toast("Це фото не вдалося відкрити.");return}
+  const fromOnboarding=e.target.id==="obAvatarIn";
+  if(fromOnboarding)obCollect();                    // не губимо вже введені поля
+  if(!state.user)state.user=blankUser();
+  state.user.avatar=toSquare(img,256).toDataURL("image/jpeg",0.85);
+  Store.update();
+  if(fromOnboarding)obRender();
+  toast("Аватар оновлено");
+});
+
 document.addEventListener("change",async e=>{
   if(e.target.id!=="meIn")return;
   const file=e.target.files?.[0];if(!file)return;
